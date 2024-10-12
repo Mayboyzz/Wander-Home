@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { FaUserCircle } from "react-icons/fa";
+import { SlUser } from "react-icons/sl";
 import * as sessionActions from "../../store/session";
 
 function ProfileButton({ user }) {
@@ -33,12 +34,12 @@ function ProfileButton({ user }) {
 		dispatch(sessionActions.logout());
 	};
 
-	const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+	const ulClassName = "profile-dropdown" + (showMenu ? "" : "-hidden");
 
 	return (
 		<>
 			<button onClick={toggleMenu}>
-				<FaUserCircle />
+				<SlUser />
 			</button>
 			<ul className={ulClassName} ref={ulRef}>
 				<li>{user.username}</li>

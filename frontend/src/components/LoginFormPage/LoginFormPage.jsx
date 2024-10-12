@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-
+import "./LoginForm.css";
 function LoginFormPage() {
 	const dispatch = useDispatch();
 	const sessionUser = useSelector((state) => state.session.user);
@@ -28,7 +28,7 @@ function LoginFormPage() {
 			<h1>Log In</h1>
 			<form onSubmit={handleSubmit}>
 				<label>
-					Username or Email
+					Username / Email:
 					<input
 						type="text"
 						value={credential}
@@ -37,7 +37,7 @@ function LoginFormPage() {
 					/>
 				</label>
 				<label>
-					Password
+					Password:
 					<input
 						type="password"
 						value={password}
