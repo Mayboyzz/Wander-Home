@@ -1,14 +1,16 @@
 form {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
 	font-size: 20px;
 }
 label {
 	padding: 10px;
+	display: inline-block;
+	width: 100px;
 }
 
 input {
 	margin: 10px;
-	height: 20px;
 }
