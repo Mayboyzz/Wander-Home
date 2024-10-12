@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { FaUserCircle } from "react-icons/fa";
 import * as sessionActions from "../../store/session";
-import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
@@ -11,11 +10,6 @@ function ProfileButton({ user }) {
 	const dispatch = useDispatch();
 	const [showMenu, setShowMenu] = useState(false);
 	const ulRef = useRef();
-
-	const toggleMenu = (e) => {
-		e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
-		setShowMenu(!showMenu);
-	};
 
 	useEffect(() => {
 		if (!showMenu) return;
@@ -39,11 +33,11 @@ function ProfileButton({ user }) {
 		closeMenu();
 	};
 
-	const ulClassName = "profile-dropdown" + (showMenu ? "" : "-hidden");
+	const ulClassName = "profile-dropdown";
 
 	return (
-		<>
-			<button onClick={toggleMenu}>
+		<div className="wrapper">
+			<button>
 				<FaUserCircle />
 			</button>
 			<ul className={ulClassName} ref={ulRef}>
@@ -59,22 +53,22 @@ function ProfileButton({ user }) {
 						</li>
 					</>
 				) : (
-					<>
+					<div className="menu">
 						<OpenModalMenuItem
 							itemText="Log In"
-							onButtonClick={closeMenu}
+							onItemClick={closeMenu}
 							modalComponent={<LoginFormModal />}
 						/>
 
 						<OpenModalMenuItem
 							itemText="Sign Up"
-							onButtonClick={closeMenu}
+							onItemClick={closeMenu}
 							modalComponent={<SignupFormModal />}
 						/>
-					</>
+					</div>
 				)}
 			</ul>
-		</>
+		</div>
 	);
 }
 

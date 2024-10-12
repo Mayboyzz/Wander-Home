@@ -47,67 +47,68 @@ function SignupFormModal() {
 		<>
 			<h1>Sign Up</h1>
 			<form onSubmit={handleSubmit}>
-				<label>
-					Email
+				<div className="input-wrapper">
+					<label>Email</label>
 					<input
 						type="text"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
+
 				{errors.email && <p>{errors.email}</p>}
-				<label>
-					Username
+				<div className="input-wrapper">
+					<label>Username</label>
 					<input
 						type="text"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.username && <p>{errors.username}</p>}
-				<label>
-					First Name
+				<div className="input-wrapper">
+					<label>First Name</label>
 					<input
 						type="text"
 						value={firstName}
 						onChange={(e) => setFirstName(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.firstName && <p>{errors.firstName}</p>}
-				<label>
-					Last Name
+				<div className="input-wrapper">
+					<label>Last Name</label>
 					<input
 						type="text"
 						value={lastName}
 						onChange={(e) => setLastName(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.lastName && <p>{errors.lastName}</p>}
-				<label>
-					Password
+				<div className="input-wrapper">
+					<label>Password</label>
 					<input
 						type="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.password && <p>{errors.password}</p>}
-				<label>
-					Confirm Password
+				<div className="input-wrapper">
+					<label>Confirm Password</label>
 					<input
 						type="password"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-				<button type="submit">Log In</button>
+				<button type="submit">Sign Up</button>
 			</form>
 		</>
 	);
