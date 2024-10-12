@@ -20,6 +20,13 @@ li {
 .profile-dropdown {
 	display: flex;
 	flex-direction: column;
+	border-radius: 10px;
+	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.285);
+	margin-top: 6px;
+}
+.profile-dropdown li {
+	cursor: pointer;
+	padding-right: 50px;
 }
 
 a {
@@ -42,6 +49,7 @@ button {
 		Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
 	text-align: center;
+	color: black;
 }
 #nav-home-button {
 	font-size: 30px;
