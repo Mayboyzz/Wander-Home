@@ -1,16 +1,30 @@
-form {
+#modal-content form {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	font-size: 20px;
 }
-label {
-	padding: 10px;
-	display: inline-block;
-	width: 100px;
-}
 
-input {
+.login-form input {
+	margin: 10px;
+	border: 1px solid rgb(78, 78, 78);
+	border-radius: 10px;
+	height: 20px;
+	padding: 20px;
+	font-size: 18px;
+}
+.login-form-buttons {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.login-form-buttons button {
+	border: none;
+	padding: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 18px;
 	margin: 10px;
 }

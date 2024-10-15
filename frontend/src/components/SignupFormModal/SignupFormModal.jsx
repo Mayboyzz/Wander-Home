@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import "./SignupFormPage.css";
 import { useModal } from "../../context/Modal";
+import { useNavigate } from "react-router-dom";
 
 function SignupFormModal() {
 	const dispatch = useDispatch();
@@ -15,6 +16,18 @@ function SignupFormModal() {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState({});
 	const { closeModal } = useModal();
+	const [button, setButton] = useState(true);
+
+	useEffect(() => {
+		password.length >= 1 &&
+		email.length >= 1 &&
+		username.length >= 1 &&
+		firstName.length >= 1 &&
+		lastName.length >= 1 &&
+		confirmPassword.length >= 1
+			? setButton(false)
+			: setButton(true);
+	}, [password, email, username, firstName, lastName, confirmPassword]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -46,69 +59,74 @@ function SignupFormModal() {
 	return (
 		<>
 			<h1>Sign Up</h1>
+
 			<form onSubmit={handleSubmit}>
 				<div className="input-wrapper">
-					<label>Email</label>
-					<input
-						type="text"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						required
-					/>
-				</div>
-
-				{errors.email && <p>{errors.email}</p>}
-				<div className="input-wrapper">
-					<label>Username</label>
-					<input
-						type="text"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						required
-					/>
-				</div>
-				{errors.username && <p>{errors.username}</p>}
-				<div className="input-wrapper">
-					<label>First Name</label>
 					<input
 						type="text"
 						value={firstName}
+						placeholder="First Name"
 						onChange={(e) => setFirstName(e.target.value)}
 						required
 					/>
 				</div>
+
 				{errors.firstName && <p>{errors.firstName}</p>}
 				<div className="input-wrapper">
-					<label>Last Name</label>
 					<input
 						type="text"
 						value={lastName}
+						placeholder="Last Name"
 						onChange={(e) => setLastName(e.target.value)}
 						required
 					/>
 				</div>
 				{errors.lastName && <p>{errors.lastName}</p>}
 				<div className="input-wrapper">
-					<label>Password</label>
+					<input
+						type="text"
+						value={email}
+						placeholder="Email"
+						onChange={(e) => setEmail(e.target.value)}
+						required
+					/>
+				</div>
+				{errors.email && <p>{errors.email}</p>}
+				<div className="input-wrapper">
+					<input
+						type="text"
+						value={username}
+						placeholder="Username"
+						onChange={(e) => setUsername(e.target.value)}
+						required
+					/>
+				</div>
+				{errors.username && <p>{errors.username}</p>}
+				<div className="input-wrapper">
 					<input
 						type="password"
 						value={password}
+						placeholder="Password"
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
 				</div>
 				{errors.password && <p>{errors.password}</p>}
 				<div className="input-wrapper">
-					<label>Confirm Password</label>
 					<input
 						type="password"
 						value={confirmPassword}
+						placeholder="Confirm Password"
 						onChange={(e) => setConfirmPassword(e.target.value)}
 						required
 					/>
 				</div>
 				{errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-				<button type="submit">Sign Up</button>
+				<div className="input-wrapper">
+					<button type="submit" disabled={button}>
+						Sign Up
+					</button>
+				</div>
 			</form>
 		</>
 	);

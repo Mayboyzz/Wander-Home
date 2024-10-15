@@ -1,0 +1,42 @@
+#spots-list-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+.spot-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.spot-info span:first-child {
+	padding-right: 4px;
+}
+
+.spot-info span:last-child {
+	padding-right: 4px;
+}
+
+.ratings {
+	display: flex;
+	align-items: center;
+}
+
+.spot-price {
+	padding-top: 10px;
+	font-weight: 600;
+}
+
+.spot-block {
+	margin: 10px;
+	padding: 10px;
+}
+
+.spot-block img {
+	width: 250px;
+	height: 250px;
+	border-radius: 20px;
+	cursor: pointer;
+}

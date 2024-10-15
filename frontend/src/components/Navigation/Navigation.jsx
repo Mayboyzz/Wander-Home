@@ -9,7 +9,9 @@ function Navigation({ isLoaded }) {
 	return (
 		<ul id="nav-bar">
 			<li id="nav-home-button">
-				<NavLink to="/">Home</NavLink>
+				<NavLink to="/">
+					<img src="/logo(2).png" alt="website logo" />
+				</NavLink>
 			</li>
 			{isLoaded && (
 				<li>

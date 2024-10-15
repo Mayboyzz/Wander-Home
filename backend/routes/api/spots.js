@@ -233,9 +233,8 @@ router.get("/:spotId", async (req, res) => {
 	});
 	if (spot) {
 		const reviews = await Review.findAll({ where: { spotId: spot.id } });
-		if (reviews.length > 1) {
-			stars = reviews.reduce((a, b) => a.stars + b.stars);
-		}
+
+		reviews.forEach((review) => (stars += review.stars));
 
 		const formatSpot = {
 			id: spot.id,
