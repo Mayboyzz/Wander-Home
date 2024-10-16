@@ -25,19 +25,21 @@ const ReviewDetail = ({ spotId }) => {
 			</div>
 			{reviews.map((review) => {
 				return (
-					<div className="review-section">
-						<div className="review-box">
-							<h3>{review.User.firstName}</h3>
-							<span>{review.createdAt}</span>
-							<p>
-								{review.review} Lorem ipsum dolor sit amet consectetur,
-								adipisicing elit. Id, voluptatum unde. Accusamus reiciendis quas
-								molestias voluptatibus libero qui corrupti placeat omnis,
-								mollitia reprehenderit sint esse autem magni, dolorem dolor
-								consectetur?
-							</p>
+					<>
+						<div className="review-section">
+							<div className="review-box">
+								<h3>{review.User.firstName}</h3>
+								<span>{review.createdAt}</span>
+								<p>
+									{review.review} Lorem ipsum dolor sit amet consectetur,
+									adipisicing elit. Id, voluptatum unde. Accusamus reiciendis
+									quas molestias voluptatibus libero qui corrupti placeat omnis,
+									mollitia reprehenderit sint esse autem magni, dolorem dolor
+									consectetur?
+								</p>
+							</div>
 						</div>
-					</div>
+					</>
 				);
 			})}
 		</>

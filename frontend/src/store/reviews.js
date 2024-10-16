@@ -37,7 +37,7 @@ export const getReviewBySpotId = (spotId) => async (dispatch) => {
 
 	if (response.ok) {
 		const data = await response.json();
-		console.log(data);
+
 		dispatch(loadReviews(data.Reviews));
 	}
 };

@@ -1,5 +1,5 @@
 const LOAD_SPOTS = "spots/loadSpots";
-const ADD_SPOT = "spots/addSpot";
+// const ADD_SPOT = "spots/addSpot";
 const LOAD_ONE_SPOT = "spots/loadOneSpot";
 
 const loadSpots = (spots) => {
@@ -9,12 +9,12 @@ const loadSpots = (spots) => {
 	};
 };
 
-const addSpot = (spot) => {
-	return {
-		type: ADD_SPOT,
-		payload: spot,
-	};
-};
+// const addSpot = (spot) => {
+// 	return {
+// 		type: ADD_SPOT,
+// 		payload: spot,
+// 	};
+// };
 
 export const loadOneSpot = (spot) => {
 	return {
@@ -46,8 +46,8 @@ const spotsReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD_SPOTS:
 			return { ...state, spots: action.payload };
-		case ADD_SPOT:
-			return { ...state, spots: action.payload };
+		// case ADD_SPOT:
+		// 	return { ...state, spots: action.payload };
 		case LOAD_ONE_SPOT:
 			return { ...state, currentSpot: action.payload };
 		default:

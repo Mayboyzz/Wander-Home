@@ -1,7 +1,7 @@
 import "./SpotPage.css";
 import { IoMdStar } from "react-icons/io";
 const SpotDetail = ({ spot }) => {
-	const mainImg = spot.SpotImages.find((image) => image.preview === true);
+	// const mainImg = spot.SpotImages.find((image) => image.preview === true);
 	return (
 		<>
 			<h1>{spot.name}</h1>
