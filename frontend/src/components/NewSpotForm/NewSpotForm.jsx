@@ -83,13 +83,13 @@ const NewSpotForm = () => {
 			console.log("hi");
 			const createdSpot = await dispatch(createSpot(newSpot));
 
-			dispatch(
+			const previewImage = await dispatch(
 				addImageToSpot(createdSpot.id, { preview: true, url: previewImg })
 			);
 			images.forEach((image) =>
 				dispatch(addImageToSpot(createdSpot.id, { preview: false, url: image }))
 			);
-
+			console.log(previewImage);
 			if (createdSpot) {
 				navigate(`/spots/${createdSpot.id}`);
 			}
@@ -239,7 +239,6 @@ const NewSpotForm = () => {
 					<input
 						type="text"
 						placeholder="Preview Image URL"
-						value={previewImg}
 						onChange={(e) => setPreviewImg(e.target.value)}
 					/>
 					{errors.image1 && <p className="error-message">* {errors.image1}</p>}

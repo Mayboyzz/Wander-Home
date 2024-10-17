@@ -18,7 +18,7 @@ const SpotDetail = ({ spot }) => {
 						if (image.preview === false) {
 							return (
 								<>
-									<img src={`${image.url}`}></img>
+									<img src={`${image.url}`} />
 								</>
 							);
 						}
