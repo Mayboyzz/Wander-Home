@@ -1,6 +1,7 @@
+import { csrfFetch } from "./csrf";
+
 const LOAD_REVIEWS = "spots/loadReviews";
-// const ADD_SPOT = "spots/addSpot";
-// const LOAD_ONE_SPOT = "spots/loadOneSpot";
+const ADD_REVIEW = "spots/addReview";
 
 const loadReviews = (reviews) => {
 	return {
@@ -9,28 +10,26 @@ const loadReviews = (reviews) => {
 	};
 };
 
-// const addSpot = (spot) => {
-// 	return {
-// 		type: ADD_SPOT,
-// 		payload: spot,
-// 	};
-// };
+const addReview = (review) => {
+	return {
+		type: ADD_REVIEW,
+		payload: review,
+	};
+};
 
-// export const loadOneSpot = (spot) => {
-// 	return {
-// 		type: LOAD_ONE_SPOT,
-// 		payload: spot,
-// 	};
-// };
-// export const getAllReviews = () => async (dispatch) => {
-// 	const response = await fetch("/api/spots");
+export const createReview = (spotId, review) => async (dispatch) => {
+	const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(review),
+	});
 
-// 	if (response.ok) {
-// 		const data = await response.json();
+	if (response.ok) {
+		const data = await response.json();
 
-// 		dispatch(loadSpots(data.Spots));
-// 	}
-// };
+		dispatch(addReview(data));
+	}
+};
 
 export const getReviewBySpotId = (spotId) => async (dispatch) => {
 	const response = await fetch(`/api/spots/${spotId}/reviews`);
@@ -41,16 +40,14 @@ export const getReviewBySpotId = (spotId) => async (dispatch) => {
 		dispatch(loadReviews(data.Reviews));
 	}
 };
-const initialState = { spotReviews: null };
+const initialState = { spotReviews: [] };
 
 const reviewsReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD_REVIEWS:
 			return { ...state, spotReviews: action.payload };
-		// case ADD_REVIEW:
-		// 	return { ...state, reviews: action.payload };
-		// case LOAD_ONE_REVIEW:
-		// 	return { ...state, currentSpotReviews: action.payload };
+		case ADD_REVIEW:
+			return { ...state, spotReviews: [...state.spotReviews, action.payload] };
 		default:
 			return state;
 	}

@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
-
+import { FaPlus } from "react-icons/fa";
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
 
@@ -17,12 +17,18 @@ function Navigation({ isLoaded }) {
 				<>
 					<li>
 						{sessionUser && (
-							<NavLink
-								style={{ color: "blue", fontWeight: 100, marginLeft: "auto" }}
-								to="/spots/new"
-							>
-								Create a New Spot!
-							</NavLink>
+							<>
+								<NavLink id="add-button" to="/spots/new">
+									<FaPlus />
+								</NavLink>
+								<NavLink
+									id="new-spot-navlink"
+									style={{ color: "blue", fontWeight: 100, marginLeft: "auto" }}
+									to="/spots/new"
+								>
+									Create a New Spot!
+								</NavLink>
+							</>
 						)}
 					</li>
 					<li>

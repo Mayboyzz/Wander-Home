@@ -76,3 +76,17 @@
 	cursor: pointer;
 	background-color: white;
 }
+#add-button {
+	display: none;
+}
+
+@media (max-width: 480px) {
+	#add-button {
+		display: flex;
+		font-size: 20px;
+		align-items: center;
+	}
+	#new-spot-navlink {
+		display: none;
+	}
+}

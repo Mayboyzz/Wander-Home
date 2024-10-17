@@ -3,9 +3,11 @@ import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import "./LoginForm.css";
 import { useModal } from "../../context/Modal";
+// import { useNavigate } from "react-router-dom";
 
 function LoginFormModal() {
 	const dispatch = useDispatch();
+	// const navigate = useNavigate();
 	const [credential, setCredential] = useState("");
 	const [password, setPassword] = useState("");
 	const [errors, setErrors] = useState({});
@@ -28,6 +30,11 @@ function LoginFormModal() {
 			? setButton(false)
 			: setButton(true);
 	}, [credential, password]);
+
+	// const login = (e) => {
+	// 	e.preventDefault();
+	// 	navigate("/");
+	// };
 	return (
 		<>
 			<h1>Log In</h1>

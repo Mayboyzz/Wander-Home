@@ -2,11 +2,19 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getReviewBySpotId } from "../../store/reviews";
 import { IoMdStar } from "react-icons/io";
+import OpenModalButton from "../OpenModalButton";
+import PostReviewModal from "../PostReviewModal";
 
 const ReviewDetail = ({ spotId }) => {
 	const dispatch = useDispatch();
 	const reviews = useSelector((state) => state.reviews.spotReviews);
 	const spot = useSelector((state) => state.spots.currentSpot);
+	const sessionUser = useSelector((state) => state.session.user);
+	let reviewed;
+
+	if (sessionUser) {
+		reviewed = reviews.find((review) => review.userId === sessionUser.id);
+	}
 
 	useEffect(() => {
 		dispatch(getReviewBySpotId(spotId));
@@ -32,8 +40,18 @@ const ReviewDetail = ({ spotId }) => {
 					)}
 				</div>
 			</div>
+			<div>
+				{sessionUser && spot.ownerId !== sessionUser.id && !reviewed && (
+					<OpenModalButton
+						buttonText="Post Your Review"
+						modalComponent={<PostReviewModal />}
+					/>
+				)}
+			</div>
 			<div style={{ marginTop: "10px" }}>
-				{spot.numReviews === 0 && <span>Be the first to post a review!</span>}
+				{sessionUser && spot.numReviews === 0 && (
+					<span>Be the first to post a review!</span>
+				)}
 			</div>
 			{reviews.toReversed().map((review) => {
 				return (
