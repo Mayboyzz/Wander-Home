@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSpotById } from "../../store/spots";
+import { getAllSpots, getSpotById } from "../../store/spots";
 import SpotDetail from "./SpotDetail";
 import ReviewDetail from "./ReviewDetails";
 
@@ -10,9 +10,10 @@ const SpotPage = () => {
 	const dispatch = useDispatch();
 
 	const spot = useSelector((state) => state.spots.currentSpot);
-	console.log(spot);
+
 	useEffect(() => {
 		dispatch(getSpotById(spotId));
+		dispatch(getAllSpots());
 	}, [dispatch, spotId]);
 
 	if (!spot) return null;

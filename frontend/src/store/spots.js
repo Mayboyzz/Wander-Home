@@ -1,21 +1,28 @@
-const LOAD_SPOTS = "spots/loadSpots";
-// const ADD_SPOT = "spots/addSpot";
-const LOAD_ONE_SPOT = "spots/loadOneSpot";
+import { csrfFetch } from "./csrf";
 
-const loadSpots = (spots) => {
+const LOAD_SPOTS = "spots/load";
+const ADD_SPOT = "spots/addSpot";
+const LOAD_ONE_SPOT = "spots/loadOneSpot";
+const ADD_IMAGE = "spots/addImage";
+
+const load = (list) => ({
+	type: LOAD_SPOTS,
+	list,
+});
+
+const addSpot = (spot) => {
 	return {
-		type: LOAD_SPOTS,
-		payload: spots,
+		type: ADD_SPOT,
+		payload: spot,
 	};
 };
 
-// const addSpot = (spot) => {
-// 	return {
-// 		type: ADD_SPOT,
-// 		payload: spot,
-// 	};
-// };
-
+const addImage = (image) => {
+	return {
+		type: ADD_IMAGE,
+		image,
+	};
+};
 export const loadOneSpot = (spot) => {
 	return {
 		type: LOAD_ONE_SPOT,
@@ -26,9 +33,8 @@ export const getAllSpots = () => async (dispatch) => {
 	const response = await fetch("/api/spots");
 
 	if (response.ok) {
-		const data = await response.json();
-
-		dispatch(loadSpots(data.Spots));
+		const list = await response.json();
+		dispatch(load(list));
 	}
 };
 
@@ -40,16 +46,63 @@ export const getSpotById = (spotId) => async (dispatch) => {
 		dispatch(loadOneSpot(data));
 	}
 };
-const initialState = { spots: null, currentSpot: null };
+
+export const createSpot = (spot) => async (dispatch) => {
+	const response = await csrfFetch("/api/spots", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(spot),
+	});
+
+	const newSpot = await response.json();
+	dispatch(addSpot(newSpot));
+	return newSpot;
+};
+
+export const addImageToSpot = (spotId, image) => async (dispatch) => {
+	const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(image),
+	});
+
+	if (response.ok) {
+		const newImage = await response.json();
+		dispatch(addImage(newImage));
+		return newImage;
+	}
+};
+const initialState = {
+	allSpots: [],
+	currentSpot: null,
+	newestSpot: null,
+	spotImages: [],
+};
 
 const spotsReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case LOAD_SPOTS:
-			return { ...state, spots: action.payload };
-		// case ADD_SPOT:
-		// 	return { ...state, spots: action.payload };
+		case LOAD_SPOTS: {
+			return {
+				...state,
+				allSpots: action.list.Spots || [],
+			};
+		}
+		case ADD_SPOT:
+			return {
+				...state,
+				allSpots: [...state.allSpots, action.payload],
+				newestSpot: action.payload,
+			};
 		case LOAD_ONE_SPOT:
 			return { ...state, currentSpot: action.payload };
+
+		case ADD_IMAGE:
+			return {
+				...state,
+				spotImages: [...state.spotImages, action.image],
+			};
 		default:
 			return state;
 	}

@@ -19,24 +19,34 @@ const ReviewDetail = ({ spotId }) => {
 			<div className="review-analytics">
 				<div style={{ marginTop: "20px" }}>
 					<IoMdStar />
-					{spot.avgStarRating ? spot.avgStarRating : 0} - {spot.numReviews}{" "}
-					{reviews.length === 1 ? "review" : "reviews"}
+					{spot.numReviews === 0 && <span>New</span>}
+					{spot.numReviews === 1 && (
+						<span>
+							{spot.avgStarRating} - {spot.numReviews} Review
+						</span>
+					)}
+					{spot.numReviews > 1 && (
+						<span>
+							{spot.avgStarRating} - {spot.numReviews} Reviews
+						</span>
+					)}
 				</div>
 			</div>
-			{reviews.map((review) => {
+			<div style={{ marginTop: "10px" }}>
+				{spot.numReviews === 0 && <span>Be the first to post a review!</span>}
+			</div>
+			{reviews.toReversed().map((review) => {
 				return (
 					<>
 						<div className="review-section">
 							<div className="review-box">
-								<h3>{review.User.firstName}</h3>
-								<span>{review.createdAt}</span>
-								<p>
-									{review.review} Lorem ipsum dolor sit amet consectetur,
-									adipisicing elit. Id, voluptatum unde. Accusamus reiciendis
-									quas molestias voluptatibus libero qui corrupti placeat omnis,
-									mollitia reprehenderit sint esse autem magni, dolorem dolor
-									consectetur?
-								</p>
+								{spot.numReviews >= 1 && (
+									<>
+										<h3>{review.User.firstName}</h3>
+										<span>{review.createdAt}</span>
+										<p>{review.review}</p>
+									</>
+								)}
 							</div>
 						</div>
 					</>

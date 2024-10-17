@@ -1,7 +1,10 @@
 import "./SpotPage.css";
 import { IoMdStar } from "react-icons/io";
+
 const SpotDetail = ({ spot }) => {
-	// const mainImg = spot.SpotImages.find((image) => image.preview === true);
+	const mainImg = spot.SpotImages.find((image) => image.preview === true);
+	const images = spot.SpotImages;
+
 	return (
 		<>
 			<h1>{spot.name}</h1>
@@ -9,12 +12,17 @@ const SpotDetail = ({ spot }) => {
 				{spot.city}, {spot.state}, {spot.country}
 			</h3>
 			<div className="spot-images">
-				<img className="big-image" src="/pexels-binyaminmellish-1396122.jpg" />
+				<img className="big-image" src={`${mainImg.url}`} />
 				<div className="small-images">
-					<img src="/pexels-binyaminmellish-1396122.jpg" />
-					<img src="/pexels-binyaminmellish-1396122.jpg" />
-					<img src="/pexels-binyaminmellish-1396122.jpg" />
-					<img src="/pexels-binyaminmellish-1396122.jpg" />
+					{images.map((image) => {
+						if (image.preview === false) {
+							return (
+								<>
+									<img src={`${image.url}`}></img>
+								</>
+							);
+						}
+					})}
 				</div>
 			</div>
 			<div className="bottom-spot-detail">
@@ -29,10 +37,21 @@ const SpotDetail = ({ spot }) => {
 						<div>${spot.price} / night</div>
 						<div className="avgStarRating">
 							<IoMdStar />
-							<span>
-								{spot.avgStarRating ? spot.avgStarRating : 0} -{" "}
-								{spot.numReviews} reviews
-							</span>
+							{spot.numReviews === 0 && <span>New</span>}
+							{spot.numReviews === 1 && (
+								<>
+									<span>
+										{spot.avgStarRating} - {spot.numReviews} Review
+									</span>
+								</>
+							)}
+							{spot.numReviews > 1 && (
+								<>
+									<span>
+										{spot.avgStarRating} - {spot.numReviews} Reviews
+									</span>
+								</>
+							)}
 						</div>
 					</div>
 					<button onClick={() => alert("Feature Coming Soon...")}>

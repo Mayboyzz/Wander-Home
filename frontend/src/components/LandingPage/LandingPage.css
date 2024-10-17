@@ -32,11 +32,11 @@
 .spot-block {
 	margin: 10px;
 	padding: 10px;
+	cursor: pointer;
 }
 
 .spot-block img {
 	width: 250px;
 	height: 250px;
 	border-radius: 20px;
-	cursor: pointer;
 }

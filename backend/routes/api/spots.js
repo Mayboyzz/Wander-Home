@@ -139,13 +139,17 @@ router.get("/", validateSpotQueries, async (req, res) => {
 
 	spots.map((spot) => {
 		let count = 0;
-		let previewUrl = "no preview url";
+		let previewUrl = spot.SpotImages.find((image) => image.preview === true);
 		spot.Reviews.forEach((review) => (count += review.stars));
-		spot.SpotImages.forEach((image) =>
-			image.preview === true
-				? (previewUrl = image.url)
-				: (previewUrl = "no preview url")
-		);
+
+		// spot.SpotImages.forEach((image) => {
+		// 	console.log(image.preview);
+		// 	image.preview === true
+		// 		? (previewUrl = image.url)
+		// 		: (previewUrl = "no preview urfl");
+		// });
+		let averageStars = count / spot.Reviews.length || 0;
+
 		Spots.push({
 			id: spot.id,
 			ownerId: spot.ownerId,
@@ -165,8 +169,8 @@ router.get("/", validateSpotQueries, async (req, res) => {
 				spot.updatedAt.getMonth() + 1
 			}-${spot.updatedAt.getDate()} ${spot.updatedAt.getHours()}:${spot.updatedAt.getMinutes()}:${spot.updatedAt.getSeconds()}`,
 			// Need to come back and fix this
-			avgRating: count / spot.Reviews.length || 0,
-			previewImage: previewUrl,
+			avgRating: averageStars.toFixed(1),
+			previewImage: previewUrl.url,
 		});
 	});
 
@@ -192,6 +196,7 @@ router.get("/current", async (req, res) => {
 					? (previewUrl = image.url)
 					: (previewUrl = "no preview url")
 			);
+			let averageStars = count / spot.Reviews.length || 0;
 			Spots.push({
 				id: spot.id,
 				ownerId: spot.ownerId,
@@ -211,7 +216,7 @@ router.get("/current", async (req, res) => {
 					spot.updatedAt.getMonth() + 1
 				}-${spot.updatedAt.getDate()} ${spot.updatedAt.getHours()}:${spot.updatedAt.getMinutes()}:${spot.updatedAt.getSeconds()}`,
 				// Need to come back and fix this
-				avgRating: count / spot.Reviews.length || 0,
+				avgRating: averageStars.toFixed(1),
 				previewImage: previewUrl,
 			});
 		});
@@ -235,7 +240,7 @@ router.get("/:spotId", async (req, res) => {
 		const reviews = await Review.findAll({ where: { spotId: spot.id } });
 
 		reviews.forEach((review) => (stars += review.stars));
-
+		let averageStars = stars / reviews.length || 0;
 		const formatSpot = {
 			id: spot.id,
 			ownerId: spot.ownerId,
@@ -255,7 +260,7 @@ router.get("/:spotId", async (req, res) => {
 				spot.updatedAt.getMonth() + 1
 			}-${spot.updatedAt.getDate()} ${spot.updatedAt.getHours()}:${spot.updatedAt.getMinutes()}:${spot.updatedAt.getSeconds()}`,
 			numReviews: reviews.length,
-			avgStarRating: stars / reviews.length,
+			avgStarRating: averageStars.toFixed(1),
 			SpotImages: spot.SpotImages,
 			Owner: {
 				id: spot.Owner.id,

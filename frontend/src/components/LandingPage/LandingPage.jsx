@@ -4,10 +4,12 @@ import { getAllSpots, loadOneSpot } from "../../store/spots";
 import "./LandingPage.css";
 import { IoMdStar } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip } from "react-tooltip";
 
 function LandingPage() {
 	const dispatch = useDispatch();
-	const allSpots = useSelector((state) => state.spots);
+	const spots = useSelector((state) => state.spots.allSpots);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -15,36 +17,47 @@ function LandingPage() {
 		dispatch(loadOneSpot(null));
 	}, [dispatch]);
 
-	if (!allSpots.spots) return null;
+	if (!spots) return null;
 
 	return (
-		<div id="spots-list-wrapper">
-			{allSpots.spots.map((spot) => {
-				return (
-					<>
-						<div className="spot-block">
-							<img
+		<>
+			<div id="spots-list-wrapper">
+				{spots.toReversed().map((spot) => {
+					return (
+						<>
+							<div
+								className="spot-block"
 								onClick={() => navigate("/spots/" + spot.id)}
-								src="/pexels-binyaminmellish-1396122.jpg"
-							/>
+							>
+								<a
+									data-tooltip-id="my-tooltip"
+									data-tooltip-content={spot.name}
+									data-tooltip-place="top"
+								>
+									<img src={`${spot.previewImage}`} />
+								</a>
+								<Tooltip id="my-tooltip" />
 
-							<div className="spot-info">
-								<span>
-									{spot.city}, {spot.state}
-								</span>
-								<div className="ratings">
-									<IoMdStar />
-									<span>{spot.avgRating}</span>
+								<div className="spot-info">
+									<span>
+										{spot.city}, {spot.state}
+									</span>
+									<div className="ratings">
+										<IoMdStar />
+										<span>
+											{spot.avgRating === "0.0" ? "New" : spot.avgRating}
+										</span>
+									</div>
+								</div>
+								<div className="spot-price">
+									<span>${spot.price} / night</span>
 								</div>
 							</div>
-							<div className="spot-price">
-								<span>${spot.price} / night</span>
-							</div>
-						</div>
-					</>
-				);
-			})}
-		</div>
+						</>
+					);
+				})}
+			</div>
+		</>
 	);
 }
 
