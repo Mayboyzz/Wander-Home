@@ -41,6 +41,13 @@
 	border-radius: 20px;
 }
 
+.spot-page-header {
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	max-width: 200px;
+}
+
 @media (max-width: 480px) {
 	.spot-block {
 		margin: 10px;

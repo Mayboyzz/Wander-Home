@@ -2,11 +2,12 @@ import { useState } from "react";
 import RatingReview from "./RatingReview";
 import { createReview } from "../../store/reviews";
 import { useDispatch, useSelector } from "react-redux";
+import { useModal } from "../../context/Modal";
 // import { useNavigate } from "react-router-dom";
 const PostReviewModal = () => {
 	const [rating, setRating] = useState(0);
 	const [review, setReview] = useState("");
-
+	const { closeModal } = useModal();
 	const spot = useSelector((state) => state.spots.currentSpot);
 
 	// const navigate = useNavigate();
@@ -15,8 +16,15 @@ const PostReviewModal = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// setErrors({});
-		const data = dispatch(createReview(spot.id, { review, stars: rating }));
-		console.log(data);
+		return dispatch(createReview(spot.id, { review, stars: rating })).then(
+			closeModal
+		);
+		// .catch(async (res) => {
+		// 	const data = await res.json();
+		// 	if (data?.errors) {
+		// 		setErrors(data.errors);
+		// 	}
+		// });
 	};
 
 	return (

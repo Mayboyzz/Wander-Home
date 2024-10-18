@@ -16,11 +16,7 @@ const SpotDetail = ({ spot }) => {
 				<div className="small-images">
 					{images.map((image) => {
 						if (image.preview === false) {
-							return (
-								<>
-									<img src={`${image.url}`} />
-								</>
-							);
+							return <img key={`img-${image.id}`} src={`${image.url}`} />;
 						}
 					})}
 				</div>
@@ -39,18 +35,14 @@ const SpotDetail = ({ spot }) => {
 							<IoMdStar />
 							{spot.numReviews === 0 && <span>New</span>}
 							{spot.numReviews === 1 && (
-								<>
-									<span>
-										{spot.avgStarRating} - {spot.numReviews} Review
-									</span>
-								</>
+								<span key="single-review">
+									{spot.avgStarRating} - {spot.numReviews} Review
+								</span>
 							)}
 							{spot.numReviews > 1 && (
-								<>
-									<span>
-										{spot.avgStarRating} - {spot.numReviews} Reviews
-									</span>
-								</>
+								<span key="multiple-reviews">
+									{spot.avgStarRating} - {spot.numReviews} Reviews
+								</span>
 							)}
 						</div>
 					</div>

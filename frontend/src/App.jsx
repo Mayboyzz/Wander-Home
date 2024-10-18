@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation/Navigation";
 import LandingPage from "./components/LandingPage";
 import SpotPage from "./components/SpotPage";
 import NewSpotForm from "./components/NewSpotForm";
+import CurrentSpotsPage from "./components/CurrentSpotsPage";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
 			{
 				path: "spots/new",
 				element: <NewSpotForm />,
+			},
+			{
+				path: "spots/current",
+				element: <CurrentSpotsPage />,
 			},
 		],
 	},
