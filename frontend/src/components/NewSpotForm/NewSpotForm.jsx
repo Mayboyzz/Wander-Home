@@ -11,11 +11,11 @@ const NewSpotForm = () => {
 	const [address, setAddress] = useState("");
 	const [city, setCity] = useState("");
 	const [state, setState] = useState("");
-	const [lat, setLat] = useState();
-	const [lng, setLng] = useState();
+	const [lat, setLat] = useState(0);
+	const [lng, setLng] = useState(0);
 	const [description, setDescription] = useState("");
 	const [name, setName] = useState("");
-	const [price, setPrice] = useState();
+	const [price, setPrice] = useState(0);
 
 	const [previewImg, setPreviewImg] = useState("");
 	const [image1, setImage1] = useState(
@@ -76,23 +76,24 @@ const NewSpotForm = () => {
 
 		const images = [image1, image2, image3, image4];
 
-		if (!errors) {
+		if (Object.keys(errors).length) {
 			setErrors(errors);
-		} else {
-			const createdSpot = await dispatch(createSpot(newSpot));
-
-			const previewImage = await dispatch(
-				addImageToSpot(createdSpot.id, { preview: true, url: previewImg })
-			);
-			images.forEach((image) =>
-				dispatch(addImageToSpot(createdSpot.id, { preview: false, url: image }))
-			);
-
-			if (createdSpot) {
-				navigate(`/spots/${createdSpot.id}`);
-			}
-			reset();
+			return;
 		}
+
+		const createdSpot = await dispatch(createSpot(newSpot));
+
+		await dispatch(
+			addImageToSpot(createdSpot.id, { preview: true, url: previewImg })
+		);
+		images.forEach((image) =>
+			dispatch(addImageToSpot(createdSpot.id, { preview: false, url: image }))
+		);
+
+		if (createdSpot) {
+			navigate(`/spots/${createdSpot.id}`);
+		}
+		reset();
 	};
 
 	const reset = () => {
@@ -168,13 +169,13 @@ const NewSpotForm = () => {
 					</div>
 					<div className="lat-lng">
 						<input
-							type="text"
+							type="number"
 							placeholder="Latitude"
 							onChange={(e) => setLat(e.target.value)}
 						/>
 
 						<input
-							type="text"
+							type="number"
 							placeholder="Longitude"
 							onChange={(e) => setLng(e.target.value)}
 						/>
@@ -220,7 +221,7 @@ const NewSpotForm = () => {
 					</div>
 					{errors.price && <p className="error-message">* {errors.price}</p>}
 					<input
-						type="text"
+						type="number"
 						placeholder="Price per night (USD)"
 						onChange={(e) => setPrice(e.target.value)}
 					/>
@@ -245,19 +246,19 @@ const NewSpotForm = () => {
 						placeholder="Image URL"
 						onChange={(e) => setImage1(e.target.value)}
 					/>
-
+					{errors.image2 && <p className="error-message">* {errors.image2}</p>}
 					<input
 						type="text"
 						placeholder="Image URL"
 						onChange={(e) => setImage2(e.target.value)}
 					/>
-
+					{errors.image3 && <p className="error-message">* {errors.image3}</p>}
 					<input
 						type="text"
 						placeholder="Image URL"
 						onChange={(e) => setImage3(e.target.value)}
 					/>
-
+					{errors.image4 && <p className="error-message">* {errors.image4}</p>}
 					<input
 						type="text"
 						placeholder="Image URL"

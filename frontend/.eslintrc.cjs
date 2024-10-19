@@ -17,6 +17,7 @@ module.exports = {
 			{ allowConstantExport: true },
 		],
 		"react/prop-types": "off",
+		"no-mixed-spaces-and-tabs": 0,
 	},
 	overrides: [
 		{

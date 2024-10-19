@@ -52,6 +52,10 @@
 	border: none;
 	border-radius: 10px;
 	padding: 10px;
+	cursor: pointer;
+}
+.spot-block button {
+	cursor: pointer;
 }
 @media (max-width: 480px) {
 	.spot-block {

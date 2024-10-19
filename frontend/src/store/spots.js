@@ -1,14 +1,16 @@
 import { csrfFetch } from "./csrf";
 
 const LOAD_SPOTS = "spots/load";
+
 const ADD_SPOT = "spots/addSpot";
 const LOAD_ONE_SPOT = "spots/loadOneSpot";
 const ADD_IMAGE = "spots/addImage";
 const UPDATE_SPOT = "spots/updateSpot";
+const DELETE_SPOT = "spots/deleteSpot";
 
-const load = (list) => ({
+const load = (spots) => ({
 	type: LOAD_SPOTS,
-	list,
+	spots,
 });
 
 const addSpot = (spot) => {
@@ -31,6 +33,14 @@ const update = (spot) => {
 		spot,
 	};
 };
+
+const deleteSpot = (spotId) => {
+	return {
+		type: DELETE_SPOT,
+		spotId,
+	};
+};
+
 export const loadOneSpot = (spot) => {
 	return {
 		type: LOAD_ONE_SPOT,
@@ -42,16 +52,6 @@ export const getAllSpots = () => async (dispatch) => {
 
 	if (response.ok) {
 		const list = await response.json();
-		dispatch(load(list));
-	}
-};
-
-export const getAllUserSpots = () => async (dispatch) => {
-	const response = await csrfFetch("/api/spots/current");
-
-	if (response.ok) {
-		const list = await response.json();
-		console.log(list);
 		dispatch(load(list));
 	}
 };
@@ -106,6 +106,17 @@ export const updateSpot = (spotId, spot) => async (dispatch) => {
 		// return updatedSpot;
 	}
 };
+
+export const deleteSpotById = (spotId) => async (dispatch) => {
+	const response = await csrfFetch(`/api/spots/${spotId}`, {
+		method: "DELETE",
+	});
+
+	if (response.ok) {
+		dispatch(deleteSpot(spotId));
+	}
+};
+
 const initialState = {
 	allSpots: [],
 	currentSpot: null,
@@ -116,9 +127,15 @@ const initialState = {
 const spotsReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD_SPOTS: {
+			const sortedSpots = action.spots.Spots
+				? action.spots.Spots.sort(
+						(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+				  )
+				: [];
+
 			return {
 				...state,
-				allSpots: action.list.Spots || [],
+				allSpots: sortedSpots,
 			};
 		}
 		case ADD_SPOT:
@@ -135,13 +152,26 @@ const spotsReducer = (state = initialState, action) => {
 				...state,
 				spotImages: [...state.spotImages, action.image],
 			};
-		case UPDATE_SPOT:
+		case UPDATE_SPOT: {
+			const updatedSpots = state.allSpots.map((spot) =>
+				spot.id === action.spot.id ? action.spot : spot
+			);
+
+			const sortedSpots = updatedSpots.sort(
+				(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+			);
+
 			return {
 				...state,
-				allSpots: state.allSpots.map((spot) =>
-					spot.id === action.spot.id ? action.spot : spot
-				),
+				allSpots: sortedSpots,
 				currentSpot: action.spot,
+			};
+		}
+
+		case DELETE_SPOT:
+			return {
+				...state,
+				allSpots: state.allSpots.filter((spot) => spot.id !== action.spotId),
 			};
 		default:
 			return state;

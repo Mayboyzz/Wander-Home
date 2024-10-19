@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteReviewById, getReviewBySpotId } from "../../store/reviews";
+import { getReviewBySpotId } from "../../store/reviews";
 import { IoMdStar } from "react-icons/io";
 import OpenModalButton from "../OpenModalButton";
 import PostReviewModal from "../PostReviewModal";
 import { getAllSpots, getSpotById } from "../../store/spots";
+import DeleteReviewModal from "./DeleteReviewModal";
 
 const ReviewDetail = ({ spotId }) => {
 	const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const ReviewDetail = ({ spotId }) => {
 	return (
 		<>
 			<div className="review-analytics">
-				<div style={{ marginTop: "20px" }}>
+				<div style={{ marginTop: "20px", marginBottom: "10px" }}>
 					<IoMdStar />
 					{spot.numReviews === 0 && <span>New</span>}
 					{spot.numReviews === 1 && (
@@ -61,23 +62,29 @@ const ReviewDetail = ({ spotId }) => {
 				)}
 			</div>
 			{reviews.toReversed().map((review) => {
+				const formatter = new Intl.DateTimeFormat("en-US", {
+					year: "numeric",
+					month: "long",
+				});
+				const date = new Date(review.createdAt);
 				return (
 					<div key={review.id} className="review-section">
 						<div className="review-box">
 							{spot.numReviews >= 1 && (
 								<>
 									<h3>{review.User?.firstName}</h3>
-									<span>{review.createdAt}</span>
+									<span>{formatter.format(date)}</span>
 									<p>{review.review}</p>
 									{sessionUser && sessionUser.id === review.userId && (
-										<button
-											onClick={() => {
-												dispatch(deleteReviewById(review.id));
-												dispatch(getReviewBySpotId(spotId));
-											}}
-										>
-											Delete
-										</button>
+										<OpenModalButton
+											modalComponent={
+												<DeleteReviewModal
+													reviewId={review.id}
+													spotId={spot.id}
+												/>
+											}
+											buttonText="Delete"
+										/>
 									)}
 								</>
 							)}

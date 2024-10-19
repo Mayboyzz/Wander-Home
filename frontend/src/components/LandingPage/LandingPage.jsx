@@ -22,38 +22,37 @@ function LandingPage() {
 	return (
 		<>
 			<div id="spots-list-wrapper">
-				{spots.toReversed().map((spot) => {
+				{spots.map((spot) => {
 					return (
-						<>
-							<div
-								className="spot-block"
-								onClick={() => navigate("/spots/" + spot.id)}
+						<div
+							key={`${spot.id}-landing-page-block`}
+							className="spot-block"
+							onClick={() => navigate("/spots/" + spot.id)}
+						>
+							<a
+								data-tooltip-id="my-tooltip"
+								data-tooltip-content={spot.name}
+								data-tooltip-place="top"
 							>
-								<a
-									data-tooltip-id="my-tooltip"
-									data-tooltip-content={spot.name}
-									data-tooltip-place="top"
-								>
-									<img src={`${spot.previewImage}`} />
-								</a>
-								<Tooltip id="my-tooltip" />
+								<img src={`${spot.previewImage}`} />
+							</a>
+							<Tooltip id="my-tooltip" />
 
-								<div className="spot-info">
+							<div className="spot-info">
+								<span>
+									{spot.city}, {spot.state}
+								</span>
+								<div className="ratings">
+									<IoMdStar />
 									<span>
-										{spot.city}, {spot.state}
+										{spot.avgRating === "0.0" ? "New" : spot.avgRating}
 									</span>
-									<div className="ratings">
-										<IoMdStar />
-										<span>
-											{spot.avgRating === "0.0" ? "New" : spot.avgRating}
-										</span>
-									</div>
-								</div>
-								<div className="spot-price">
-									<span>${spot.price} / night</span>
 								</div>
 							</div>
-						</>
+							<div className="spot-price">
+								<span>${spot.price} / night</span>
+							</div>
+						</div>
 					);
 				})}
 			</div>

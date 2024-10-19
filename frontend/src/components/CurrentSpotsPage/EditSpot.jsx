@@ -202,7 +202,7 @@ const EditSpot = () => {
 						onChange={(e) => setPrice(e.target.value)}
 					/>
 
-					<button type="submit">Create Spot</button>
+					<button type="submit">Update Spot</button>
 				</form>
 			</section>
 		</div>

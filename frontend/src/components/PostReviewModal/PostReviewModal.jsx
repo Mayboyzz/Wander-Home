@@ -10,21 +10,13 @@ const PostReviewModal = () => {
 	const { closeModal } = useModal();
 	const spot = useSelector((state) => state.spots.currentSpot);
 
-	// const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// setErrors({});
 		return dispatch(createReview(spot.id, { review, stars: rating })).then(
 			closeModal
 		);
-		// .catch(async (res) => {
-		// 	const data = await res.json();
-		// 	if (data?.errors) {
-		// 		setErrors(data.errors);
-		// 	}
-		// });
 	};
 
 	return (

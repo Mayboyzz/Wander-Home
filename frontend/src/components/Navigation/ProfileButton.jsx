@@ -15,6 +15,7 @@ function ProfileButton({ user }) {
 	const [showMenu, setShowMenu] = useState(false);
 	const ulRef = useRef();
 	const navigate = useNavigate();
+
 	const toggleMenu = (e) => {
 		e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
 		// if (!showMenu) setShowMenu(true);
@@ -64,31 +65,46 @@ function ProfileButton({ user }) {
 					<>
 						<li>Hello, {user.firstName}</li>
 						<li style={{ marginBottom: "10px" }}>{user.email}</li>
-						<li>
+						<li
+							style={{
+								borderTop: "1px solid black",
+								borderBottom: "1px solid black",
+								padding: "8px 0",
+								cursor: "pointer",
+							}}
+						>
+							{" "}
 							<NavLink
 								className="manage-spots"
 								to={"/spots/current"}
 								style={{ fontWeight: "100" }}
+								onClick={closeMenu}
 							>
 								Manage Spots
 							</NavLink>
 						</li>
-						<li>
-							<button onClick={logout}>log out</button>
+						<li style={{ cursor: "pointer" }} onClick={logout}>
+							<button>log out</button>
 						</li>
 					</>
 				) : (
 					<div className="menu">
 						<OpenModalMenuItem
+							modalComponent={<SignupFormModal />}
 							itemText="Sign up"
 							onItemClick={closeMenu}
-							modalComponent={<SignupFormModal />}
+							onModalClose={() => {
+								if (user) navigate("/");
+							}}
 						/>
 
 						<OpenModalMenuItem
 							itemText="Log in"
 							onItemClick={closeMenu}
 							modalComponent={<LoginFormModal />}
+							onModalClose={() => {
+								if (user) navigate("/");
+							}}
 						/>
 					</div>
 				)}

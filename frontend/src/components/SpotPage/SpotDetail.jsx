@@ -4,15 +4,15 @@ import { IoMdStar } from "react-icons/io";
 import { getSpotById } from "../../store/spots";
 
 const SpotDetail = ({ spot }) => {
-	if (!spot || !spot.SpotImages) {
-		return <p>Loading...</p>;
-	}
-	const mainImg = spot.SpotImages.find((image) => image.preview === true);
-	const otherImages = spot.SpotImages.filter((image) => !image.preview);
-
 	useEffect(() => {
 		getSpotById(spot.id);
 	}, [spot]);
+
+	if (!spot || !spot.SpotImages) return <p>Loading...</p>;
+
+	const mainImg = spot.SpotImages.find((image) => image.preview === true);
+	const otherImages = spot.SpotImages.filter((image) => !image.preview);
+
 	return (
 		<>
 			<h1>{spot.name}</h1>
