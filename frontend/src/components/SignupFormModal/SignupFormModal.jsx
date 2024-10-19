@@ -44,6 +44,7 @@ function SignupFormModal() {
 				.then(closeModal)
 				.catch(async (res) => {
 					const data = await res.json();
+					console.log(data.errors);
 					if (data?.errors) {
 						setErrors(data.errors);
 					}
@@ -59,9 +60,10 @@ function SignupFormModal() {
 		<>
 			<h1>Sign Up</h1>
 
-			<form onSubmit={handleSubmit}>
+			<form data-testid="sign-up-form" onSubmit={handleSubmit}>
 				<div className="input-wrapper">
 					<input
+						data-testid="first-name-input"
 						type="text"
 						value={firstName}
 						placeholder="First Name"
@@ -73,6 +75,7 @@ function SignupFormModal() {
 				{errors.firstName && <p>{errors.firstName}</p>}
 				<div className="input-wrapper">
 					<input
+						data-testid="last-name-input"
 						type="text"
 						value={lastName}
 						placeholder="Last Name"
@@ -83,6 +86,7 @@ function SignupFormModal() {
 				{errors.lastName && <p>{errors.lastName}</p>}
 				<div className="input-wrapper">
 					<input
+						data-testid="email-input"
 						type="text"
 						value={email}
 						placeholder="Email"
@@ -90,9 +94,12 @@ function SignupFormModal() {
 						required
 					/>
 				</div>
-				{errors.email && <p>{errors.email}</p>}
+				{errors.email && (
+					<p data-testid="email-error-message">{errors.email}</p>
+				)}
 				<div className="input-wrapper">
 					<input
+						data-testid="username-input"
 						type="text"
 						value={username}
 						placeholder="Username"
@@ -100,9 +107,12 @@ function SignupFormModal() {
 						required
 					/>
 				</div>
-				{errors.username && <p>{errors.username}</p>}
+				{errors.username && (
+					<p data-testid="username-error-message">{errors.username}</p>
+				)}
 				<div className="input-wrapper">
 					<input
+						data-testid="password-input"
 						type="password"
 						value={password}
 						placeholder="Password"
@@ -113,6 +123,7 @@ function SignupFormModal() {
 				{errors.password && <p>{errors.password}</p>}
 				<div className="input-wrapper">
 					<input
+						data-testid="confirm-password-input"
 						type="password"
 						value={confirmPassword}
 						placeholder="Confirm Password"
@@ -122,8 +133,12 @@ function SignupFormModal() {
 				</div>
 				{errors.confirmPassword && <p>{errors.confirmPassword}</p>}
 				<div className="input-wrapper">
-					<button type="submit" disabled={button}>
-						Sign Up
+					<button
+						data-testid="form-sign-up-button"
+						type="submit"
+						disabled={button}
+					>
+						Sign up
 					</button>
 				</div>
 			</form>

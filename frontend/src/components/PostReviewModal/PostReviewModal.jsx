@@ -3,7 +3,7 @@ import RatingReview from "./RatingReview";
 import { createReview } from "../../store/reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-// import { useNavigate } from "react-router-dom";
+
 const PostReviewModal = () => {
 	const [rating, setRating] = useState(0);
 	const [review, setReview] = useState("");

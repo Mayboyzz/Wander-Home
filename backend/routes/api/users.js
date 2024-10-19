@@ -28,22 +28,25 @@ const validateSignup = [
 router.post("/", validateSignup, async (req, res) => {
 	const { firstName, lastName, email, password, username } = req.body;
 
-	const existingUser = await User.findOne({
+	const existingUser = await User.findAll({
 		where: {
 			[Op.or]: [{ email: email }, { username: username }],
 		},
 		attributes: { include: ["username", "email"] },
 	});
+	const existingEmail = existingUser.find((user) => user.email === email);
+	const existingUsername = existingUser.find(
+		(user) => user.username === username
+	);
 
 	if (existingUser) {
 		let errors = {};
-		if (existingUser.email === email) {
+		if (existingEmail) {
 			errors.email = "User with that email already exists";
 		}
-		if (existingUser.username === username) {
+		if (existingUsername) {
 			errors.username = "User with that username already exists";
 		}
-
 		return res.status(500).json({
 			message: "User already exists",
 			errors,

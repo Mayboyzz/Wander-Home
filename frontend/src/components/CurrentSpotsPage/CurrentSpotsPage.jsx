@@ -24,7 +24,9 @@ const CurrentSpotsPage = () => {
 		<>
 			<div className="spot-page-header">
 				<h1>Manage Your Spots</h1>
-				<button>Create a New Spot</button>
+				<button onClick={() => navigate("/spots/new")}>
+					Create a New Spot
+				</button>
 			</div>
 
 			<div id="spots-list-wrapper">
@@ -57,6 +59,12 @@ const CurrentSpotsPage = () => {
 								</div>
 								<div className="spot-price">
 									<span>${spot.price} / night</span>
+								</div>
+								<div className="manage-spot">
+									<button onClick={() => navigate(`/spots/${spot.id}/edit`)}>
+										Update
+									</button>
+									<button>Delete</button>
 								</div>
 							</div>
 						</>
