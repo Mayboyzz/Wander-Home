@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getAllSpots } from "../../store/spots";
+import { getAllSpots, getSpotById } from "../../store/spots";
 import { IoMdStar } from "react-icons/io";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
@@ -32,42 +32,42 @@ const CurrentSpotsPage = () => {
 			<div id="spots-list-wrapper">
 				{currentSpots.toReversed().map((spot) => {
 					return (
-						<>
-							<div
-								className="spot-block"
-								onClick={() => navigate("/spots/" + spot.id)}
+						<div key={`${spot.id}-block`} className="spot-block">
+							<a
+								data-tooltip-id="my-tooltip"
+								data-tooltip-content={spot.name}
+								data-tooltip-place="top"
 							>
-								<a
-									data-tooltip-id="my-tooltip"
-									data-tooltip-content={spot.name}
-									data-tooltip-place="top"
-								>
-									<img src={`${spot.previewImage}`} />
-								</a>
-								<Tooltip id="my-tooltip" />
+								<img src={`${spot.previewImage}`} />
+							</a>
+							<Tooltip id="my-tooltip" />
 
-								<div className="spot-info">
+							<div className="spot-info">
+								<span>
+									{spot.city}, {spot.state}
+								</span>
+								<div className="ratings">
+									<IoMdStar />
 									<span>
-										{spot.city}, {spot.state}
+										{spot.avgRating === "0.0" ? "New" : spot.avgRating}
 									</span>
-									<div className="ratings">
-										<IoMdStar />
-										<span>
-											{spot.avgRating === "0.0" ? "New" : spot.avgRating}
-										</span>
-									</div>
-								</div>
-								<div className="spot-price">
-									<span>${spot.price} / night</span>
-								</div>
-								<div className="manage-spot">
-									<button onClick={() => navigate(`/spots/${spot.id}/edit`)}>
-										Update
-									</button>
-									<button>Delete</button>
 								</div>
 							</div>
-						</>
+							<div className="spot-price">
+								<span>${spot.price} / night</span>
+							</div>
+							<div className="manage-spot">
+								<button
+									onClick={() => {
+										getSpotById(spot.id);
+										navigate(`/spots/${spot.id}/edit`);
+									}}
+								>
+									Update
+								</button>
+								<button>Delete</button>
+							</div>
+						</div>
 					);
 				})}
 			</div>

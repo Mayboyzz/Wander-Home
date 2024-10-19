@@ -15,23 +15,24 @@ function Navigation({ isLoaded }) {
 			</li>
 			{isLoaded && (
 				<>
-					<li>
+					<li className="right-nav-bar">
 						{sessionUser && (
-							<>
+							<div style={{ display: "flex", alignItems: "center" }}>
 								<NavLink id="add-button" to="/spots/new">
 									<FaPlus />
 								</NavLink>
 								<NavLink
 									id="new-spot-navlink"
-									style={{ color: "blue", fontWeight: 100, marginLeft: "auto" }}
 									to="/spots/new"
+									style={{
+										marginRight: "10px",
+										color: "blue",
+									}}
 								>
 									Create a New Spot!
 								</NavLink>
-							</>
+							</div>
 						)}
-					</li>
-					<li>
 						<ProfileButton user={sessionUser} />
 					</li>
 				</>

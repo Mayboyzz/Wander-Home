@@ -80,11 +80,18 @@
 	display: none;
 }
 
-@media (max-width: 480px) {
+#new-spot-navlink {
+	margin-left: auto;
+}
+.right-nav-bar {
+	display: flex;
+}
+@media (max-width: 544px) {
 	#add-button {
 		display: flex;
 		font-size: 20px;
 		align-items: center;
+		margin-right: 30px;
 	}
 	#new-spot-navlink {
 		display: none;

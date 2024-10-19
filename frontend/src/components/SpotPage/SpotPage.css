@@ -32,6 +32,7 @@
 	padding: 20px 40px;
 	border-radius: 10px;
 	margin-top: 20px;
+	width: 30%;
 }
 
 .reserve-a-booking button {
@@ -68,6 +69,10 @@
 	margin: 0 auto;
 	width: 1000px;
 }
+.spot-description p {
+	word-break: break-all;
+}
+
 .spot-description {
 	width: 60%;
 }

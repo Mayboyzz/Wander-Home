@@ -1,10 +1,18 @@
+import { useEffect } from "react";
 import "./SpotPage.css";
 import { IoMdStar } from "react-icons/io";
+import { getSpotById } from "../../store/spots";
 
 const SpotDetail = ({ spot }) => {
+	if (!spot || !spot.SpotImages) {
+		return <p>Loading...</p>;
+	}
 	const mainImg = spot.SpotImages.find((image) => image.preview === true);
-	const images = spot.SpotImages;
+	const otherImages = spot.SpotImages.filter((image) => !image.preview);
 
+	useEffect(() => {
+		getSpotById(spot.id);
+	}, [spot]);
 	return (
 		<>
 			<h1>{spot.name}</h1>
@@ -12,13 +20,15 @@ const SpotDetail = ({ spot }) => {
 				{spot.city}, {spot.state}, {spot.country}
 			</h3>
 			<div className="spot-images">
-				<img className="big-image" src={`${mainImg.url}`} />
+				<img
+					className="big-image"
+					src={`${mainImg.url}`}
+					alt={`Main view of $${spot.name}`}
+				/>
 				<div className="small-images">
-					{images.map((image) => {
-						if (image.preview === false) {
-							return <img key={`img-${image.id}`} src={`${image.url}`} />;
-						}
-					})}
+					{otherImages.map((image) => (
+						<img key={`img-${image.id}`} src={`${image.url}`} />
+					))}
 				</div>
 			</div>
 			<div className="bottom-spot-detail">

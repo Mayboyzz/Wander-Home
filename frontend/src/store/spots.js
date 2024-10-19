@@ -4,6 +4,7 @@ const LOAD_SPOTS = "spots/load";
 const ADD_SPOT = "spots/addSpot";
 const LOAD_ONE_SPOT = "spots/loadOneSpot";
 const ADD_IMAGE = "spots/addImage";
+const UPDATE_SPOT = "spots/updateSpot";
 
 const load = (list) => ({
 	type: LOAD_SPOTS,
@@ -23,6 +24,13 @@ const addImage = (image) => {
 		image,
 	};
 };
+
+const update = (spot) => {
+	return {
+		type: UPDATE_SPOT,
+		spot,
+	};
+};
 export const loadOneSpot = (spot) => {
 	return {
 		type: LOAD_ONE_SPOT,
@@ -34,6 +42,16 @@ export const getAllSpots = () => async (dispatch) => {
 
 	if (response.ok) {
 		const list = await response.json();
+		dispatch(load(list));
+	}
+};
+
+export const getAllUserSpots = () => async (dispatch) => {
+	const response = await csrfFetch("/api/spots/current");
+
+	if (response.ok) {
+		const list = await response.json();
+		console.log(list);
 		dispatch(load(list));
 	}
 };
@@ -74,6 +92,20 @@ export const addImageToSpot = (spotId, image) => async (dispatch) => {
 		return newImage;
 	}
 };
+
+export const updateSpot = (spotId, spot) => async (dispatch) => {
+	const response = await csrfFetch(`/api/spots/${spotId}`, {
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(spot),
+	});
+
+	if (response.ok) {
+		const updatedSpot = await response.json();
+		dispatch(update(updatedSpot));
+		// return updatedSpot;
+	}
+};
 const initialState = {
 	allSpots: [],
 	currentSpot: null,
@@ -102,6 +134,14 @@ const spotsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				spotImages: [...state.spotImages, action.image],
+			};
+		case UPDATE_SPOT:
+			return {
+				...state,
+				allSpots: state.allSpots.map((spot) =>
+					spot.id === action.spot.id ? action.spot : spot
+				),
+				currentSpot: action.spot,
 			};
 		default:
 			return state;

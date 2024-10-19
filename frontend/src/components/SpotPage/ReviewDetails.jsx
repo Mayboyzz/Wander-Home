@@ -4,6 +4,7 @@ import { deleteReviewById, getReviewBySpotId } from "../../store/reviews";
 import { IoMdStar } from "react-icons/io";
 import OpenModalButton from "../OpenModalButton";
 import PostReviewModal from "../PostReviewModal";
+import { getAllSpots, getSpotById } from "../../store/spots";
 
 const ReviewDetail = ({ spotId }) => {
 	const dispatch = useDispatch();
@@ -17,7 +18,9 @@ const ReviewDetail = ({ spotId }) => {
 		: false;
 
 	useEffect(() => {
+		dispatch(getSpotById(spotId));
 		dispatch(getReviewBySpotId(spotId));
+		dispatch(getAllSpots());
 	}, [dispatch, spotId]);
 
 	if (!reviews) return null;

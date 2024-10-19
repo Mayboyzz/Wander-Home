@@ -55,12 +55,12 @@ const NewSpotForm = () => {
 		if (!previewImg) errors.previewImg = "Preview image is required";
 		if (!validExtensions.some((extension) => image1.endsWith(extension)))
 			errors.image1 = "Image URL must end in .png, .jpg, .jpeg";
-		// if (!validExtensions.some((extension) => image2.endsWith(extension)))
-		// 	errors.image2 = "Image URL must end in .png, .jpg, .jpeg";
-		// if (!validExtensions.some((extension) => image3.endsWith(extension)))
-		// 	errors.image3 = "Image URL must end in .png, .jpg, .jpeg";
-		// if (!validExtensions.some((extension) => image4.endsWith(extension)))
-		// 	errors.image4 = "Image URL must end in .png, .jpg, .jpeg";
+		if (!validExtensions.some((extension) => image2.endsWith(extension)))
+			errors.image2 = "Image URL must end in .png, .jpg, .jpeg";
+		if (!validExtensions.some((extension) => image3.endsWith(extension)))
+			errors.image3 = "Image URL must end in .png, .jpg, .jpeg";
+		if (!validExtensions.some((extension) => image4.endsWith(extension)))
+			errors.image4 = "Image URL must end in .png, .jpg, .jpeg";
 
 		const newSpot = {
 			country,
@@ -78,9 +78,7 @@ const NewSpotForm = () => {
 
 		if (!errors) {
 			setErrors(errors);
-			console.log(!errors);
 		} else {
-			console.log("hi");
 			const createdSpot = await dispatch(createSpot(newSpot));
 
 			const previewImage = await dispatch(
@@ -89,7 +87,7 @@ const NewSpotForm = () => {
 			images.forEach((image) =>
 				dispatch(addImageToSpot(createdSpot.id, { preview: false, url: image }))
 			);
-			console.log(previewImage);
+
 			if (createdSpot) {
 				navigate(`/spots/${createdSpot.id}`);
 			}

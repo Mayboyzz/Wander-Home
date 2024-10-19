@@ -10,12 +10,12 @@ const SpotPage = () => {
 	const dispatch = useDispatch();
 
 	const spot = useSelector((state) => state.spots.currentSpot);
-	useSelector((state) => state.reviews.spotReviews);
+	const reviews = useSelector((state) => state.reviews.spotReviews);
 
 	useEffect(() => {
 		dispatch(getSpotById(spotId));
 		dispatch(getAllSpots());
-	}, [dispatch, spotId]);
+	}, [dispatch, spotId, reviews]);
 
 	if (!spot) return null;
 
