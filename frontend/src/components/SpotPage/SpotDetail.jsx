@@ -1,13 +1,7 @@
-import { useEffect } from "react";
 import "./SpotPage.css";
 import { IoMdStar } from "react-icons/io";
-import { getSpotById } from "../../store/spots";
 
 const SpotDetail = ({ spot }) => {
-	useEffect(() => {
-		getSpotById(spot.id);
-	}, [spot]);
-
 	if (!spot || !spot.SpotImages) return <p>Loading...</p>;
 
 	const mainImg = spot.SpotImages.find((image) => image.preview === true);
@@ -15,10 +9,13 @@ const SpotDetail = ({ spot }) => {
 
 	return (
 		<>
-			<h1>{spot.name}</h1>
-			<h3>
-				{spot.city}, {spot.state}, {spot.country}
-			</h3>
+			<div data-testid="spot-name">
+				<h1>{spot.name}</h1>
+				<h3 data-testid="spot-location">
+					{spot.city}, {spot.state}, {spot.country}
+				</h3>
+			</div>
+
 			<div className="spot-images">
 				<img
 					className="big-image"
@@ -46,12 +43,13 @@ const SpotDetail = ({ spot }) => {
 							{spot.numReviews === 0 && <span>New</span>}
 							{spot.numReviews === 1 && (
 								<span key="single-review">
-									{spot.avgStarRating} - {spot.numReviews} Review
+									{spot.avgStarRating} &#183; {spot.numReviews} Review
 								</span>
 							)}
 							{spot.numReviews > 1 && (
 								<span key="multiple-reviews">
-									{spot.avgStarRating} - {spot.numReviews} Reviews
+									{spot.avgStarRating} &#183;
+									{spot.numReviews} Reviews
 								</span>
 							)}
 						</div>

@@ -34,12 +34,12 @@ const ReviewDetail = ({ spotId }) => {
 					{spot.numReviews === 0 && <span>New</span>}
 					{spot.numReviews === 1 && (
 						<span>
-							{spot.avgStarRating} - {spot.numReviews} Review
+							{spot.avgStarRating} &#183; {spot.numReviews} Review
 						</span>
 					)}
 					{spot.numReviews > 1 && (
 						<span>
-							{spot.avgStarRating} - {spot.numReviews} Reviews
+							{spot.avgStarRating} &#183; {spot.numReviews} Reviews
 						</span>
 					)}
 				</div>

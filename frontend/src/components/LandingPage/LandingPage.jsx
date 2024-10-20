@@ -20,43 +20,56 @@ function LandingPage() {
 	if (!spots) return null;
 
 	return (
-		<>
-			<div id="spots-list-wrapper">
+		<div id="spots-list-wrapper">
+			<div
+				data-testid="spot-list"
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					flexWrap: "wrap",
+					margin: "0 auto",
+				}}
+			>
 				{spots.map((spot) => {
 					return (
 						<div
 							key={`${spot.id}-landing-page-block`}
 							className="spot-block"
+							data-testid="spot-tile"
 							onClick={() => navigate("/spots/" + spot.id)}
 						>
 							<a
 								data-tooltip-id="my-tooltip"
+								data-testid="spot-tooltip"
 								data-tooltip-content={spot.name}
 								data-tooltip-place="top"
 							>
-								<img src={`${spot.previewImage}`} />
+								<img
+									data-testid="spot-thumbnail-image"
+									src={`${spot.previewImage}`}
+								/>
 							</a>
 							<Tooltip id="my-tooltip" />
 
 							<div className="spot-info">
-								<span>
+								<span data-testid="spot-city">
 									{spot.city}, {spot.state}
 								</span>
 								<div className="ratings">
 									<IoMdStar />
-									<span>
+									<span data-testid="spot-rating">
 										{spot.avgRating === "0.0" ? "New" : spot.avgRating}
 									</span>
 								</div>
 							</div>
 							<div className="spot-price">
-								<span>${spot.price} / night</span>
+								<span data-testid="spot-price">${spot.price} / night</span>
 							</div>
 						</div>
 					);
 				})}
 			</div>
-		</>
+		</div>
 	);
 }
 

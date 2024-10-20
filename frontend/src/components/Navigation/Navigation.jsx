@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 import { FaPlus } from "react-icons/fa";
+
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
 
@@ -22,6 +23,7 @@ function Navigation({ isLoaded }) {
 									<FaPlus />
 								</NavLink>
 								<NavLink
+									data-testid="create-new-spot-button"
 									id="new-spot-navlink"
 									to="/spots/new"
 									style={{

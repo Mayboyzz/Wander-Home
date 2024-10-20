@@ -9,12 +9,15 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useModal } from "../../context/Modal";
 
 function ProfileButton({ user }) {
 	const dispatch = useDispatch();
 	const [showMenu, setShowMenu] = useState(false);
 	const ulRef = useRef();
 	const navigate = useNavigate();
+
+	const { setOnModalClose } = useModal();
 
 	const toggleMenu = (e) => {
 		e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
@@ -35,6 +38,10 @@ function ProfileButton({ user }) {
 
 		return () => document.removeEventListener("click", closeMenu);
 	}, [showMenu]);
+
+	useEffect(() => {
+		if (user) setOnModalClose(() => navigate("/"));
+	}, [user]);
 
 	const closeMenu = () => setShowMenu(false);
 
@@ -93,18 +100,12 @@ function ProfileButton({ user }) {
 							modalComponent={<SignupFormModal />}
 							itemText="Sign up"
 							onItemClick={closeMenu}
-							onModalClose={() => {
-								if (user) navigate("/");
-							}}
 						/>
 
 						<OpenModalMenuItem
 							itemText="Log in"
 							onItemClick={closeMenu}
 							modalComponent={<LoginFormModal />}
-							onModalClose={() => {
-								if (user) navigate("/");
-							}}
 						/>
 					</div>
 				)}

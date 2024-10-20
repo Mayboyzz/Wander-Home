@@ -34,23 +34,21 @@ router.post("/", validateSignup, async (req, res) => {
 		},
 		attributes: { include: ["username", "email"] },
 	});
-	const existingEmail = existingUser.find((user) => user.email === email);
-	const existingUsername = existingUser.find(
+
+	const existingEmail = existingUser.filter((user) => user.email === email);
+	const existingUsername = existingUser.filter(
 		(user) => user.username === username
 	);
 
-	if (existingUser) {
+	if (existingUser.length > 0) {
 		let errors = {};
-		if (existingEmail) {
+		if (existingEmail.length > 0) {
 			errors.email = "User with that email already exists";
 		}
-		if (existingUsername) {
+		if (existingUsername.length > 0) {
 			errors.username = "User with that username already exists";
 		}
-		return res.status(500).json({
-			message: "User already exists",
-			errors,
-		});
+		return res.status(500).json({ message: "User already exists", errors });
 	}
 
 	const hashedPassword = bcrypt.hashSync(password);

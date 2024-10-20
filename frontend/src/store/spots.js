@@ -121,7 +121,7 @@ const initialState = {
 	allSpots: [],
 	currentSpot: null,
 	newestSpot: null,
-	spotImages: [],
+	// spotImages: [],
 };
 
 const spotsReducer = (state = initialState, action) => {
@@ -147,11 +147,11 @@ const spotsReducer = (state = initialState, action) => {
 		case LOAD_ONE_SPOT:
 			return { ...state, currentSpot: action.payload };
 
-		case ADD_IMAGE:
-			return {
-				...state,
-				spotImages: [...state.spotImages, action.image],
-			};
+		// case ADD_IMAGE:
+		// 	return {
+		// 		...state,
+		// 		spotImages: [...state.spotImages, action.image],
+		// 	};
 		case UPDATE_SPOT: {
 			const updatedSpots = state.allSpots.map((spot) =>
 				spot.id === action.spot.id ? action.spot : spot

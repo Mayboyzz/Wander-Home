@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addImageToSpot, createSpot, getAllSpots } from "../../store/spots";
+import {
+	addImageToSpot,
+	createSpot,
+	getAllSpots,
+	loadOneSpot,
+} from "../../store/spots";
 import { useNavigate } from "react-router-dom";
 import "./NewSpotForm.css";
 
@@ -92,6 +97,7 @@ const NewSpotForm = () => {
 
 		if (createdSpot) {
 			navigate(`/spots/${createdSpot.id}`);
+			loadOneSpot(null);
 		}
 		reset();
 	};

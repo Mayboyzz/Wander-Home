@@ -6,6 +6,7 @@ import { useModal } from "../../context/Modal";
 
 function LoginFormModal() {
 	const dispatch = useDispatch();
+
 	const [credential, setCredential] = useState("");
 	const [password, setPassword] = useState("");
 	const [errors, setErrors] = useState({});
@@ -36,10 +37,6 @@ function LoginFormModal() {
 			: setButton(true);
 	}, [credential, password]);
 
-	// const login = (e) => {
-	// 	e.preventDefault();
-	// 	navigate("/");
-	// };
 	return (
 		<>
 			<h1>Log In</h1>
