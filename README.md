@@ -1,5 +1,37 @@
 # API Project
 
+# SETUP
+Clone the repo in your own folder.
+
+## Backend setup
+Inside the `backend` folder, run `npm install`.
+
+Once you've installed the dependencies, you'll need to create a `.env` file and add the following contents:
+```
+PORT=8000
+DB_FILE=db/dev.db
+JWT_SECRET=<generate secret token>
+JWT_EXPIRES_IN=604800
+SCHEMA=<custom schema name>
+```
+
+Now you can seed the migration & seeder files:
+
+```
+npx dotenv sequelize db:migrate
+npx dotenv sequelize db:seed:all
+```
+
+After this you can run the server by using the `npm start` command
+
+## Frontend Setup
+Inside the `frontend` folder, run `npm install`
+
+After that is done, you can run `npm run dev` to start the frontend server.
+
+The server will be running on `localhost:5173`.
+
+
 ## Database Schema Design
 
 ![airbnb-database-schema]
