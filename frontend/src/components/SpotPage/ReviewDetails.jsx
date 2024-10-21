@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getReviewBySpotId } from "../../store/reviews";
 import { IoMdStar } from "react-icons/io";
 import OpenModalButton from "../OpenModalButton";
 import PostReviewModal from "../PostReviewModal";
-import { getAllSpots, getSpotById } from "../../store/spots";
 import DeleteReviewModal from "./DeleteReviewModal";
+import { useEffect } from "react";
+import { getSpotById } from "../../store/spots";
 
 const ReviewDetail = ({ spotId }) => {
 	const dispatch = useDispatch();
@@ -20,9 +19,7 @@ const ReviewDetail = ({ spotId }) => {
 
 	useEffect(() => {
 		dispatch(getSpotById(spotId));
-		dispatch(getReviewBySpotId(spotId));
-		dispatch(getAllSpots());
-	}, [dispatch, spotId]);
+	}, [reviews]);
 
 	if (!reviews) return null;
 
@@ -31,15 +28,15 @@ const ReviewDetail = ({ spotId }) => {
 			<div className="review-analytics">
 				<div style={{ marginTop: "20px", marginBottom: "10px" }}>
 					<IoMdStar />
-					{spot.numReviews === 0 && <span>New</span>}
-					{spot.numReviews === 1 && (
+					{reviews.length === 0 && <span>New</span>}
+					{reviews.length === 1 && (
 						<span>
-							{spot.avgStarRating} &#183; {spot.numReviews} Review
+							{spot.avgStarRating} &#183; {reviews.length} Review
 						</span>
 					)}
-					{spot.numReviews > 1 && (
+					{reviews.length > 1 && (
 						<span>
-							{spot.avgStarRating} &#183; {spot.numReviews} Reviews
+							{spot.avgStarRating} &#183; {reviews.length} Reviews
 						</span>
 					)}
 				</div>
@@ -55,7 +52,7 @@ const ReviewDetail = ({ spotId }) => {
 				)}
 			</div>
 			<div style={{ marginTop: "10px" }}>
-				{sessionUser && spot.numReviews === 0 && (
+				{sessionUser && reviews.length === 0 && (
 					<>
 						<span>Be the first to post a review!</span>
 					</>
@@ -70,7 +67,7 @@ const ReviewDetail = ({ spotId }) => {
 				return (
 					<div key={review.id} className="review-section">
 						<div className="review-box">
-							{spot.numReviews >= 1 && (
+							{reviews.length >= 1 && (
 								<>
 									<h3>{review.User?.firstName}</h3>
 									<span>{formatter.format(date)}</span>

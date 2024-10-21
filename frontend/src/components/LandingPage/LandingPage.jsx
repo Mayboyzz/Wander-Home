@@ -6,15 +6,18 @@ import { IoMdStar } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
+import { loadReviews } from "../../store/reviews";
 
 function LandingPage() {
 	const dispatch = useDispatch();
 	const spots = useSelector((state) => state.spots.allSpots);
+	useSelector((state) => state.reviews);
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		dispatch(getAllSpots());
 		dispatch(loadOneSpot(null));
+		dispatch(loadReviews([]));
 	}, [dispatch]);
 
 	if (!spots) return null;

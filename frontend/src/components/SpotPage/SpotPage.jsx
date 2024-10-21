@@ -1,21 +1,23 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getAllSpots, getSpotById } from "../../store/spots";
+import { getSpotById, loadOneSpot } from "../../store/spots";
 import SpotDetail from "./SpotDetail";
 import ReviewDetail from "./ReviewDetails";
+import { getReviewBySpotId } from "../../store/reviews";
 
 const SpotPage = () => {
 	const { spotId } = useParams();
 	const dispatch = useDispatch();
 
+	useSelector((state) => state.reviews.spotReviews);
 	const spot = useSelector((state) => state.spots.currentSpot);
-	// const reviews = useSelector((state) => state.reviews.spotReviews);
 
 	useEffect(() => {
+		dispatch(loadOneSpot(null));
 		dispatch(getSpotById(spotId));
-		dispatch(getAllSpots());
-	}, [dispatch]);
+		dispatch(getReviewBySpotId(spotId));
+	}, [dispatch, spotId]);
 
 	if (!spot) return null;
 

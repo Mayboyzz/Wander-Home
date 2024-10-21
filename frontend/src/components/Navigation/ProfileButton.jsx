@@ -17,8 +17,6 @@ function ProfileButton({ user }) {
 	const ulRef = useRef();
 	const navigate = useNavigate();
 
-	const { setOnModalClose } = useModal();
-
 	const toggleMenu = (e) => {
 		e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
 		// if (!showMenu) setShowMenu(true);
@@ -38,10 +36,6 @@ function ProfileButton({ user }) {
 
 		return () => document.removeEventListener("click", closeMenu);
 	}, [showMenu]);
-
-	useEffect(() => {
-		if (user) setOnModalClose(() => navigate("/"));
-	}, [user]);
 
 	const closeMenu = () => setShowMenu(false);
 
@@ -98,12 +92,12 @@ function ProfileButton({ user }) {
 					<div className="menu">
 						<OpenModalMenuItem
 							modalComponent={<SignupFormModal />}
-							itemText="Sign up"
+							itemText="Sign Up"
 							onItemClick={closeMenu}
 						/>
 
 						<OpenModalMenuItem
-							itemText="Log in"
+							itemText="Log In"
 							onItemClick={closeMenu}
 							modalComponent={<LoginFormModal />}
 						/>

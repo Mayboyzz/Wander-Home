@@ -4,7 +4,7 @@ const LOAD_REVIEWS = "spots/loadReviews";
 const ADD_REVIEW = "spots/addReview";
 const REMOVE_REVIEW = "spots/removeReview";
 
-const loadReviews = (reviews) => {
+export const loadReviews = (reviews) => {
 	return {
 		type: LOAD_REVIEWS,
 		payload: reviews,

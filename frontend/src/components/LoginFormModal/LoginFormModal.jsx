@@ -13,22 +13,34 @@ function LoginFormModal() {
 	const { closeModal } = useModal();
 	const [button, setButton] = useState(true);
 
-	const handleSubmit = async (e) => {
+	// const handleSubmit = async (e) => {
+	// 	e.preventDefault();
+	// 	setErrors({});
+	// 	try {
+	// 		const user = await dispatch(
+	// 			sessionActions.login({ credential, password })
+	// 		);
+	// 		if (user) {
+	// 			closeModal();
+	// 		}
+	// 	} catch (res) {
+	// 		const data = await res.json();
+	// 		if (data && data.errors) {
+	// 			setErrors(data.errors);
+	// 		}
+	// 	}
+	// };
+	const handleSubmit = (e) => {
 		e.preventDefault();
 		setErrors({});
-		try {
-			const user = await dispatch(
-				sessionActions.login({ credential, password })
-			);
-			if (user) {
-				closeModal();
-			}
-		} catch (res) {
-			const data = await res.json();
-			if (data && data.errors) {
-				setErrors(data.errors);
-			}
-		}
+		return dispatch(sessionActions.login({ credential, password }))
+			.then(closeModal)
+			.catch(async (res) => {
+				const data = await res.json();
+				if (data && data.errors) {
+					setErrors(data.errors);
+				}
+			});
 	};
 
 	useEffect(() => {
