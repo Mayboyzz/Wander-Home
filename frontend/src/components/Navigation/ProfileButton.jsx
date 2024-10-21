@@ -9,7 +9,6 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useModal } from "../../context/Modal";
 
 function ProfileButton({ user }) {
 	const dispatch = useDispatch();
