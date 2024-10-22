@@ -70,11 +70,11 @@
 	width: 1000px;
 }
 .spot-description p {
-	word-break: break-all;
+	word-break:keep-all;
 }
 
 .spot-description {
-	width: 60%;
+	width: 55%;
 }
 
 .review-delete-modal {
@@ -100,4 +100,62 @@
 .review-delete-modal button:first-of-type:hover {
 	background-color: rgb(186, 0, 0);
 	transition: 0.3s;
+}
+
+.review-box h3 {
+	margin-top: 0;
+}
+
+@media (max-width: 544px) {
+	.big-image {
+		width: 350px;
+		height: 300px;
+		border-radius: 10px;
+
+	}
+	.small-images img {
+		width: 350px;
+		height: 300px;
+		border-radius: 10px;
+	}
+	.small-images {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		justify-content: center;
+		align-content: center;
+		
+	}
+	.spot-images {
+		display: flex;
+		flex-direction: column;
+		margin: 0 auto;
+	}
+	.spot-images img {
+		margin: 6px;
+		border: 1px solid rgba(0, 0, 0, 0.317);
+	}
+	.spot-page {
+		text-align: center;
+		margin: 0 auto;
+		width: 100%;
+	}
+	.bottom-spot-detail {
+		flex-direction: column;
+		width: 100%;
+	}
+	.spot-description {
+		width: 100%;
+	}
+	.reserve-a-booking {
+		width: 400px;
+		
+	}
+	.review-box {
+		border-top: 1px solid rgba(131, 131, 131, 0.608);
+		border-bottom: 1px solid rgba(131, 131, 131, 0.608);
+		padding: 20px;
+		margin-bottom: 10px;
+	}
+	
 }

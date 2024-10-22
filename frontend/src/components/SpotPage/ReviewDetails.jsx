@@ -6,10 +6,11 @@ import DeleteReviewModal from "./DeleteReviewModal";
 import { useEffect } from "react";
 import { getSpotById } from "../../store/spots";
 
+
 const ReviewDetail = ({ spotId }) => {
 	const dispatch = useDispatch();
 
-	const reviews = useSelector((state) => state.reviews.spotReviews);
+	const reviews = useSelector((state) => state.reviews.SpotReviews);
 	const spot = useSelector((state) => state.spots.currentSpot);
 	const sessionUser = useSelector((state) => state.session.user);
 
@@ -46,7 +47,7 @@ const ReviewDetail = ({ spotId }) => {
 					<>
 						<OpenModalButton
 							buttonText="Post Your Review"
-							modalComponent={<PostReviewModal />}
+							modalComponent={<PostReviewModal spotId={spotId}/>}
 						/>
 					</>
 				)}
@@ -58,6 +59,7 @@ const ReviewDetail = ({ spotId }) => {
 					</>
 				)}
 			</div>
+			<div className="review-section">
 			{reviews.toReversed().map((review) => {
 				const formatter = new Intl.DateTimeFormat("en-US", {
 					year: "numeric",
@@ -65,8 +67,8 @@ const ReviewDetail = ({ spotId }) => {
 				});
 				const date = new Date(review.createdAt);
 				return (
-					<div key={review.id} className="review-section">
-						<div className="review-box">
+					
+						<div key={review.id} className="review-box">
 							{reviews.length >= 1 && (
 								<>
 									<h3>{review.User?.firstName}</h3>
@@ -86,9 +88,9 @@ const ReviewDetail = ({ spotId }) => {
 								</>
 							)}
 						</div>
-					</div>
 				);
 			})}
+			</div>
 		</>
 	);
 };

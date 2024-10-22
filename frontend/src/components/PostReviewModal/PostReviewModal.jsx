@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import RatingReview from "./RatingReview";
-import { createReview } from "../../store/reviews";
+import { createReview, getReviewBySpotId } from "../../store/reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 
-const PostReviewModal = () => {
+const PostReviewModal = ({spotId}) => {
 	const [rating, setRating] = useState(0);
 	const [review, setReview] = useState("");
 	const [button, setButton] = useState(true);
@@ -16,6 +16,7 @@ const PostReviewModal = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		dispatch(createReview(spot.id, { review, stars: rating })).then(closeModal);
+		dispatch(getReviewBySpotId(spotId))
 	};
 
 	useEffect(() => {

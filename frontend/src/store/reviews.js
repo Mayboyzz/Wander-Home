@@ -59,18 +59,18 @@ export const deleteReviewById = (reviewId) => async (dispatch) => {
 		dispatch(removeReview(data));
 	}
 };
-const initialState = { spotReviews: [] };
+const initialState = { SpotReviews: [] };
 
 const reviewsReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD_REVIEWS:
-			return { ...state, spotReviews: action.payload };
+			return { ...state, SpotReviews: action.payload };
 		case ADD_REVIEW:
-			return { ...state, spotReviews: [...state.spotReviews, action.payload] };
+			return { ...state, SpotReviews: [...state.spotReviews, action.payload] };
 		case REMOVE_REVIEW:
 			return {
 				...state,
-				spotReviews: state.spotReviews.filter(
+				SpotReviews: state.SpotReviews.filter(
 					(review) => review.id !== action.payload
 				),
 			};
