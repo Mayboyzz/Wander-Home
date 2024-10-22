@@ -45,7 +45,7 @@ module.exports = {
 				lng: -122.4730327,
 				name: "Forest Retreat Cabin",
 				description:
-					"Escape to nature in this charming log cabin tucked away in the Blue Ridge Mountains. Forest Retreat Cabin offers all the comforts of home with a rustic twist—think a roaring fireplace, cozy wooden interiors, and a spacious deck that overlooks the forest.",
+					"Escape to Forest Retreat Cabin, a cozy log cabin in the Blue Ridge Mountains. Enjoy rustic charm with a roaring fireplace, wooden interiors, and a spacious deck overlooking the forest.",
 				price: 123,
 			},
 			{
@@ -58,7 +58,7 @@ module.exports = {
 				lng: -122.4730327,
 				name: "Mountain Chalet Escape",
 				description:
-					"This luxurious mountain chalet is the ideal retreat for both summer and winter getaways. With its spacious, ski-in/ski-out design, Mountain Chalet Escape is equipped with a stone fireplace, vaulted ceilings, and a private hot tub that overlooks the snowy peaks.",
+					"Mountain Chalet Escape is a luxurious ski-in/ski-out retreat perfect for year-round getaways. Enjoy vaulted ceilings, a stone fireplace, and a private hot tub with views of the snowy peaks.",
 				price: 123,
 			},
 			{
@@ -84,7 +84,7 @@ module.exports = {
 				lng: -122.4730327,
 				name: "Villa de la Luna",
 				description:
-					"Experience boho luxury in this eco-friendly villa nestled in the lush jungles of Tulum. Villa de la Luna is a tranquil retreat featuring natural materials, an open-concept design, and a private plunge pool.",
+					"Experience boho luxury at Villa de la Luna, an eco-friendly retreat in Tulum’s lush jungle. Enjoy natural materials, open-concept design, and a private plunge pool for ultimate relaxation.",
 				price: 123,
 			},
 		]);
