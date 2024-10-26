@@ -1,4 +1,6 @@
-# API Project
+# WanderHome
+
+WanderHome is a fullstack project for App Academy. It is an AirBnB clone, made with React.js for the frontend, and express/sequelize for the backend. The frontend was completely designed by myself, and the backend was created jointly between myself, and [Selin Uzunoglu](https://github.com/selinwilliams).
 
 # SETUP
 
@@ -6,10 +8,11 @@ Clone the repo in your own folder.
 
 ## Backend setup
 
-In the `backend` folder, run `npm install` create a `.env` file that will be used to define your
+In the `backend` folder:
+- Run `npm install`
+- Create a `.env` file that will be used to define your
 environment variables.
-
-Populate the `.env` file based on the example below:
+- Populate the `.env` file based on the example below:
 
 ```plaintext
 PORT=8000
