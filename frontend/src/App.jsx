@@ -37,6 +37,7 @@ const router = createBrowserRouter([
 				path: "/",
 				element: <LandingPage />,
 			},
+			{ path: "/profile", element: <ManageUserPage /> },
 			{
 				path: "/spots/:spotId",
 				element: <Outlet />,

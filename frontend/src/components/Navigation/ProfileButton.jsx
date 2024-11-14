@@ -44,8 +44,12 @@ function ProfileButton({ user }) {
 		navigate("/");
 	};
 
+	const ulClassName = `profile-dropdown${showMenu ? "" : "-hidden"}`;
+	const buttonClassName = `profile-button${showMenu ? "-active" : ""}`;
+
 	return (
-		<div className="relative z-50">
+		<>
+			{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 			<button
 				type="button"
 				className={`flex items-center gap-2 p-3 rounded-full border border-neutral-200 hover:shadow-airbnb transition-all bg-white
@@ -63,45 +67,48 @@ function ProfileButton({ user }) {
 				ref={ulRef}
 			>
 				{user ? (
-					<div className="py-2">
-						<li className="px-4 py-2 text-neutral-600">
-							Hello, {user.firstName}
+					<>
+						<li>Hello, {user.firstName}</li>
+						<li style={{ marginBottom: "10px" }}>{user.email}</li>
+						<li
+							style={{
+								borderTop: "1px solid black",
+								borderBottom: "1px solid black",
+								padding: "8px 0",
+								cursor: "pointer",
+							}}
+						>
+							<NavLink
+								className="manage-spots"
+								to={"/spots/current"}
+								style={{ fontWeight: "100" }}
+								onClick={closeMenu}
+							>
+								Manage Spots
+							</NavLink>
 						</li>
-						<li className="px-4 pb-2 text-neutral-500 text-sm">{user.email}</li>
-						<div className="border-t border-neutral-200">
-							<li>
-								<NavLink
-									className="block px-4 py-3 hover:bg-neutral-50 transition-colors text-neutral-600"
-									to="/spots/current"
-									onClick={closeMenu}
-								>
-									Manage Spots
-								</NavLink>
-							</li>
-						</div>
-						<div className="border-t border-neutral-200">
-							<li>
-								<NavLink
-									className="block px-4 py-3 hover:bg-neutral-50 transition-colors text-neutral-600"
-									to="/bookings"
-									onClick={closeMenu}
-								>
-									Manage Bookings
-								</NavLink>
-							</li>
-						</div>
-						<div className="border-t border-neutral-200">
-							<li>
-								<button
-									type="button"
-									onClick={logout}
-									className="w-full px-4 py-3 hover:bg-neutral-50 transition-colors text-neutral-600 text-center"
-								>
-									Log Out
-								</button>
-							</li>
-						</div>
-					</div>
+						<li
+							style={{
+								borderBottom: "1px solid black",
+								padding: "8px 0",
+								cursor: "pointer",
+							}}
+						>
+							<NavLink
+								className="manage-spots"
+								to={"/profile"}
+								style={{ fontWeight: "100" }}
+								onClick={closeMenu}
+							>
+								Manage Profile
+							</NavLink>
+						</li>
+						{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+						<li style={{ cursor: "pointer" }} onClick={logout}>
+							{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+							<button>log out</button>
+						</li>
+					</>
 				) : (
 					<div className="py-2">
 						<div className="text-neutral-600">
