@@ -45,11 +45,12 @@ function ProfileButton({ user }) {
 		navigate("/");
 	};
 
-	const ulClassName = "profile-dropdown" + (showMenu ? "" : "-hidden");
-	const buttonClassName = "profile-button" + (showMenu ? "-active" : "");
+	const ulClassName = `profile-dropdown${showMenu ? "" : "-hidden"}`;
+	const buttonClassName = `profile-button${showMenu ? "-active" : ""}`;
 
 	return (
 		<>
+			{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 			<button
 				data-testid="user-menu-button"
 				className={buttonClassName}
@@ -73,7 +74,6 @@ function ProfileButton({ user }) {
 								cursor: "pointer",
 							}}
 						>
-							{" "}
 							<NavLink
 								className="manage-spots"
 								to={"/spots/current"}
@@ -83,7 +83,25 @@ function ProfileButton({ user }) {
 								Manage Spots
 							</NavLink>
 						</li>
+						<li
+							style={{
+								borderBottom: "1px solid black",
+								padding: "8px 0",
+								cursor: "pointer",
+							}}
+						>
+							<NavLink
+								className="manage-spots"
+								to={"/profile"}
+								style={{ fontWeight: "100" }}
+								onClick={closeMenu}
+							>
+								Manage Profile
+							</NavLink>
+						</li>
+						{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 						<li style={{ cursor: "pointer" }} onClick={logout}>
+							{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 							<button>log out</button>
 						</li>
 					</>
