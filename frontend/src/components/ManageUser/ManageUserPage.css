@@ -1,0 +1,33 @@
+.profile-container {
+	background-color: white;
+	border-radius: 20px;
+	margin: 0 auto;
+	width: 50%;
+	height: 400px;
+	text-align: center;
+	margin-top: 120px;
+	padding: 10px;
+}
+
+.profile-edit-wrapper {
+	display: flex;
+	justify-content: center;
+}
+
+.profile-edit-wrapper img {
+	width: 20%;
+}
+
+.profile-edit-form {
+	display: flex;
+	flex-direction: column;
+	width: 40%;
+}
+
+.profile-edit-form input {
+	margin: 4px;
+}
+.profile-edit-form button {
+	width: 200px;
+	margin: 0 auto;
+}
