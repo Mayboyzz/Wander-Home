@@ -10,7 +10,6 @@ const SpotPage = () => {
 	const { spotId } = useParams();
 	const dispatch = useDispatch();
 
-	useSelector((state) => state.reviews.spotReviews);
 	const spot = useSelector((state) => state.spots.currentSpot);
 
 	useEffect(() => {
@@ -22,7 +21,7 @@ const SpotPage = () => {
 	if (!spot) return null;
 
 	return (
-		<div className="spot-page">
+		<div className="max-w-[1120px] mx-auto px-6 py-8">
 			<SpotDetail spot={spot} />
 			<ReviewDetail spotId={spot.id} />
 		</div>

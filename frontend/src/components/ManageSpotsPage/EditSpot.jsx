@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-	addImageToSpot,
-	createSpot,
-	getAllSpots,
-	loadOneSpot,
-} from "../../store/spots";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { getSpotById, updateSpot } from "../../store/spots";
 
-const NewSpotForm = () => {
+const EditSpot = () => {
+	const { spotId } = useParams();
+
+	const spot = useSelector((state) => state.spots.currentSpot);
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [country, setCountry] = useState("");
@@ -21,26 +20,29 @@ const NewSpotForm = () => {
 	const [name, setName] = useState("");
 	const [price, setPrice] = useState(0);
 
-	const [previewImg, setPreviewImg] = useState("");
-	const [image1, setImage1] = useState(
-		"https://www.distefanosales.com/wp-content/uploads/2023/08/image-coming-soon-placeholder.png",
-	);
-	const [image2, setImage2] = useState(
-		"https://www.distefanosales.com/wp-content/uploads/2023/08/image-coming-soon-placeholder.png",
-	);
-	const [image3, setImage3] = useState(
-		"https://www.distefanosales.com/wp-content/uploads/2023/08/image-coming-soon-placeholder.png",
-	);
-	const [image4, setImage4] = useState(
-		"https://www.distefanosales.com/wp-content/uploads/2023/08/image-coming-soon-placeholder.png",
-	);
-
 	const [errors, setErrors] = useState({});
 
-	const validExtensions = [".jpg", ".png", ".jpeg"];
 	useEffect(() => {
-		dispatch(getAllSpots());
-	}, [dispatch]);
+		if (spotId) {
+			dispatch(getSpotById(spotId));
+		}
+	}, [dispatch, spotId]);
+
+	useEffect(() => {
+		if (spot) {
+			setCountry(spot.country || "");
+			setAddress(spot.address || "");
+			setCity(spot.city || "");
+			setState(spot.state || "");
+			setLat(spot.lat || 0);
+			setLng(spot.lng || 0);
+			setDescription(spot.description || "");
+			setName(spot.name || "");
+			setPrice(spot.price || 0);
+		}
+	}, [spot]);
+
+	if (!spot) return null;
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -56,17 +58,13 @@ const NewSpotForm = () => {
 		if (!name.length) errors.name = "Name is required";
 		if (!price) errors.price = "Price is required";
 
-		if (!previewImg) errors.previewImg = "Preview image is required";
-		if (!validExtensions.some((extension) => image1.endsWith(extension)))
-			errors.image1 = "Image URL must end in .png, .jpg, .jpeg";
-		if (!validExtensions.some((extension) => image2.endsWith(extension)))
-			errors.image2 = "Image URL must end in .png, .jpg, .jpeg";
-		if (!validExtensions.some((extension) => image3.endsWith(extension)))
-			errors.image3 = "Image URL must end in .png, .jpg, .jpeg";
-		if (!validExtensions.some((extension) => image4.endsWith(extension)))
-			errors.image4 = "Image URL must end in .png, .jpg, .jpeg";
+		if (Object.keys(errors).length > 0) {
+			setErrors(errors);
+			return;
+		}
 
-		const newSpot = {
+		const updatedSpot = {
+			...spot,
 			country,
 			address,
 			city,
@@ -78,51 +76,16 @@ const NewSpotForm = () => {
 			price,
 		};
 
-		const images = [image1, image2, image3, image4];
+		dispatch(updateSpot(spotId, updatedSpot));
 
-		if (Object.keys(errors).length) {
-			setErrors(errors);
-			return;
-		}
-
-		const createdSpot = await dispatch(createSpot(newSpot));
-
-		await dispatch(
-			addImageToSpot(createdSpot.id, { preview: true, url: previewImg }),
-		);
-
-		for (const image of images) {
-			await dispatch(
-				addImageToSpot(createdSpot.id, { preview: false, url: image }),
-			);
-		}
-
-		if (createdSpot) {
-			navigate(`/spots/${createdSpot.id}`);
-			loadOneSpot(null);
-		}
-		reset();
-	};
-
-	const reset = () => {
-		setAddress("");
-		setCity("");
-		setCountry("");
-		setDescription("");
-		setLat(0);
-		setLng(0);
-		setName("");
-		setPrice(0);
-		setState("");
+		navigate(`/spots/${spotId}`);
 	};
 
 	return (
 		<div className="max-w-3xl mx-auto px-4 py-8">
 			<section className="bg-white rounded-lg shadow-md p-6 space-y-6">
 				<div className="space-y-2">
-					<h1 className="text-3xl font-bold text-gray-800">
-						Create a new Spot
-					</h1>
+					<h1 className="text-3xl font-bold text-gray-800">Update Spot</h1>
 					<h3 className="text-xl font-semibold text-gray-700">
 						Where&apos;s your place located?
 					</h3>
@@ -193,8 +156,9 @@ const NewSpotForm = () => {
 								<p className="text-red-500 text-sm">* {errors.lat}</p>
 							)}
 							<input
-								type="number"
+								type="text"
 								placeholder="Latitude"
+								value={lat}
 								onChange={(e) => setLat(e.target.value)}
 								className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
 							/>
@@ -205,8 +169,9 @@ const NewSpotForm = () => {
 								<p className="text-red-500 text-sm">* {errors.lng}</p>
 							)}
 							<input
-								type="number"
+								type="text"
 								placeholder="Longitude"
+								value={lng}
 								onChange={(e) => setLng(e.target.value)}
 								className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
 							/>
@@ -226,10 +191,11 @@ const NewSpotForm = () => {
 							<p className="text-red-500 text-sm">* {errors.description}</p>
 						)}
 						<textarea
-							className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none min-h-[120px]"
+							name="description"
 							placeholder="Please write at least 30 characters"
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}
+							className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none min-h-[120px]"
 						/>
 					</div>
 
@@ -265,60 +231,18 @@ const NewSpotForm = () => {
 							<p className="text-red-500 text-sm">* {errors.price}</p>
 						)}
 						<input
-							type="number"
+							type="text"
 							placeholder="Price per night (USD)"
+							value={price}
 							onChange={(e) => setPrice(e.target.value)}
 							className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
 						/>
 					</div>
-
-					<div className="space-y-2 pt-4">
-						<h3 className="text-xl font-semibold text-gray-700">
-							Liven up your spot with photos
-						</h3>
-						<span className="text-gray-600 text-sm">
-							Submit a link to at least one photo to publish your spot.
-						</span>
-
-						<div className="space-y-4">
-							<div className="space-y-1">
-								{errors.previewImg && (
-									<p className="text-red-500 text-sm">* {errors.previewImg}</p>
-								)}
-								<input
-									type="text"
-									placeholder="Preview Image URL"
-									onChange={(e) => setPreviewImg(e.target.value)}
-									className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-								/>
-							</div>
-
-							{[
-								{ error: errors.image1, setter: setImage1 },
-								{ error: errors.image2, setter: setImage2 },
-								{ error: errors.image3, setter: setImage3 },
-								{ error: errors.image4, setter: setImage4 },
-							].map((image, idx) => (
-								<div key={`additional-image-${idx + 1}`} className="space-y-1">
-									{image.error && (
-										<p className="text-red-500 text-sm">* {image.error}</p>
-									)}
-									<input
-										type="text"
-										placeholder="Image URL"
-										onChange={(e) => image.setter(e.target.value)}
-										className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-									/>
-								</div>
-							))}
-						</div>
-					</div>
-
 					<button
 						type="submit"
 						className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 font-semibold mt-6"
 					>
-						Create Spot
+						Update Spot
 					</button>
 				</form>
 			</section>
@@ -326,4 +250,4 @@ const NewSpotForm = () => {
 	);
 };
 
-export default NewSpotForm;
+export default EditSpot;

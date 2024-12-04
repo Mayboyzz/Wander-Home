@@ -7,6 +7,7 @@ const LOAD_ONE_SPOT = "spots/loadOneSpot";
 const ADD_IMAGE = "spots/addImage";
 const UPDATE_SPOT = "spots/updateSpot";
 const DELETE_SPOT = "spots/deleteSpot";
+const SET_USER_LOCATION = "spots/setUserLocation";
 
 const load = (spots) => ({
 	type: LOAD_SPOTS,
@@ -57,7 +58,7 @@ export const getAllSpots = () => async (dispatch) => {
 };
 
 export const getSpotById = (spotId) => async (dispatch) => {
-	const response = await fetch("/api/spots/" + spotId);
+	const response = await fetch(`/api/spots/${spotId}`);
 
 	if (response.ok) {
 		const data = await response.json();
@@ -117,20 +118,26 @@ export const deleteSpotById = (spotId) => async (dispatch) => {
 	}
 };
 
+export const setUserLocation = (location) => ({
+	type: SET_USER_LOCATION,
+	location,
+});
+
 const initialState = {
 	allSpots: [],
 	currentSpot: null,
 	newestSpot: null,
-	// spotImages: [],
+	userLocation: null,
 };
 
+// biome-ignore lint/style/useDefaultParameterLast: <explanation>
 const spotsReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD_SPOTS: {
 			const sortedSpots = action.spots.Spots
 				? action.spots.Spots.sort(
-						(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
-				  )
+						(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+					)
 				: [];
 
 			return {
@@ -154,11 +161,11 @@ const spotsReducer = (state = initialState, action) => {
 		// 	};
 		case UPDATE_SPOT: {
 			const updatedSpots = state.allSpots.map((spot) =>
-				spot.id === action.spot.id ? action.spot : spot
+				spot.id === action.spot.id ? action.spot : spot,
 			);
 
 			const sortedSpots = updatedSpots.sort(
-				(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+				(a, b) => new Date(b.createdAt) - new Date(a.createdAt),
 			);
 
 			return {
@@ -172,6 +179,11 @@ const spotsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				allSpots: state.allSpots.filter((spot) => spot.id !== action.spotId),
+			};
+		case SET_USER_LOCATION:
+			return {
+				...state,
+				userLocation: action.location,
 			};
 		default:
 			return state;

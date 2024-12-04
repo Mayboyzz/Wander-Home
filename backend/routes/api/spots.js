@@ -44,7 +44,7 @@ const validateCreation = [
 	check("price")
 		.exists({ checkFalsy: true })
 		.isInt()
-		.custom((value) => (value >= 0 ? true : false))
+		.custom((value) => value >= 0)
 		.withMessage("Price per day must be a positive number"),
 	handleValidationErrors,
 ];
@@ -104,7 +104,7 @@ router.get("/", validateSpotQueries, async (req, res) => {
 	let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
 		req.query;
 
-	let query = {
+	const query = {
 		where: {},
 		include: [{ model: SpotImage }, { model: Review }],
 	};
@@ -112,13 +112,13 @@ router.get("/", validateSpotQueries, async (req, res) => {
 	if (page === undefined) {
 		page = 1;
 	} else {
-		page = parseInt(page);
+		page = Number.parseInt(page);
 	}
 
 	if (size === undefined) {
 		size = 20;
 	} else {
-		size = parseInt(size);
+		size = Number.parseInt(size);
 	}
 
 	if (page >= 1 && size >= 1) {
@@ -135,20 +135,18 @@ router.get("/", validateSpotQueries, async (req, res) => {
 
 	const spots = await Spot.findAll(query);
 
-	let Spots = [];
+	const Spots = [];
 
 	spots.map((spot) => {
 		let count = 0;
-		let previewUrl = spot.SpotImages.find((image) => image.preview === true);
-		spot.Reviews.forEach((review) => (count += review.stars));
-
-		// spot.SpotImages.forEach((image) => {
-		// 	console.log(image.preview);
-		// 	image.preview === true
+		const previewUrl = spot.SpotImages.find((image) => image.preview === true);
+		for (const review of spot.Reviews) {
+			count += review.stars;
+		}
 		// 		? (previewUrl = image.url)
 		// 		: (previewUrl = "no preview urfl");
 		// });
-		let averageStars = count / spot.Reviews.length || 0;
+		const averageStars = count / spot.Reviews.length || 0;
 
 		Spots.push({
 			id: spot.id,
@@ -186,17 +184,16 @@ router.get("/current", async (req, res) => {
 			include: [{ model: SpotImage }, { model: Review }],
 		});
 
-		let Spots = [];
+		const Spots = [];
 		spots.map((spot) => {
 			let count = 0;
-			let previewUrl = "no preview url";
-			spot.Reviews.forEach((review) => (count += review.stars));
-			spot.SpotImages.forEach((image) =>
-				image.preview === true
-					? (previewUrl = image.url)
-					: (previewUrl = "no preview url")
+			const previewUrl = spot.SpotImages.find(
+				(image) => image.preview === true,
 			);
-			let averageStars = count / spot.Reviews.length || 0;
+			for (const review of spot.Reviews) {
+				count += review.stars;
+			}
+			const averageStars = count / spot.Reviews.length || 0;
 			Spots.push({
 				id: spot.id,
 				ownerId: spot.ownerId,
@@ -228,7 +225,7 @@ router.get("/current", async (req, res) => {
 });
 // Get details of a spot by SpotId
 router.get("/:spotId", async (req, res) => {
-	let stars = 0;
+	const stars = 0;
 	const spot = await Spot.findByPk(req.params.spotId, {
 		include: [
 			{ model: Review, attributes: [] },
@@ -239,8 +236,11 @@ router.get("/:spotId", async (req, res) => {
 	if (spot) {
 		const reviews = await Review.findAll({ where: { spotId: spot.id } });
 
-		reviews.forEach((review) => (stars += review.stars));
-		let averageStars = stars / reviews.length || 0;
+		let stars = 0;
+		for (const review of reviews) {
+			stars += review.stars;
+		}
+		const averageStars = stars / reviews.length || 0;
 		const formatSpot = {
 			id: spot.id,
 			ownerId: spot.ownerId,
@@ -421,18 +421,30 @@ router.post("/:spotId/reviews", validateReview, async (req, res) => {
 					review,
 					stars,
 				});
+
+				// Calculate new average rating
+				const allReviews = await Review.findAll({
+					where: { spotId: spot.id },
+				});
+				let totalStars = 0;
+				for (const review of allReviews) {
+					totalStars += review.stars;
+				}
+				const avgRating = totalStars / allReviews.length;
+
+				// Update spot with new average
+				await spot.update({
+					avgRating: avgRating.toFixed(1),
+				});
+
 				const formattedRes = {
 					id: newReview.id,
 					userId: newReview.userId,
 					spotId: newReview.spotId,
 					review: newReview.review,
 					stars: newReview.stars,
-					createdAt: `${newReview.createdAt.getFullYear()}-${
-						newReview.createdAt.getMonth() + 1
-					}-${newReview.createdAt.getDate()} ${newReview.createdAt.getHours()}:${newReview.createdAt.getMinutes()}:${newReview.createdAt.getSeconds()}`,
-					updatedAt: `${newReview.updatedAt.getFullYear()}-${
-						newReview.updatedAt.getMonth() + 1
-					}-${newReview.updatedAt.getDate()} ${newReview.updatedAt.getHours()}:${newReview.updatedAt.getMinutes()}:${newReview.updatedAt.getSeconds()}`,
+					createdAt: `${newReview.createdAt.getFullYear()}-${newReview.createdAt.getMonth() + 1}-${newReview.createdAt.getDate()} ${newReview.createdAt.getHours()}:${newReview.createdAt.getMinutes()}:${newReview.createdAt.getSeconds()}`,
+					updatedAt: `${newReview.updatedAt.getFullYear()}-${newReview.updatedAt.getMonth() + 1}-${newReview.updatedAt.getDate()} ${newReview.updatedAt.getHours()}:${newReview.updatedAt.getMinutes()}:${newReview.updatedAt.getSeconds()}`,
 				};
 
 				res.status(201).json(formattedRes);
@@ -628,6 +640,48 @@ router.post("/:spotId/bookings", async (req, res) => {
 		}-${newBooking.updatedAt.getDate()} ${newBooking.updatedAt.getHours()}:${newBooking.updatedAt.getMinutes()}:${newBooking.updatedAt.getSeconds()}`,
 	};
 	res.status(201).json(formatRes);
+});
+
+// Add this to the reviews.js route file for handling review deletion
+router.delete("/:reviewId", async (req, res) => {
+	const { user } = req;
+	if (user) {
+		const review = await Review.findByPk(req.params.reviewId);
+		if (review) {
+			if (review.userId === user.id) {
+				const spotId = review.spotId;
+				await review.destroy();
+
+				// Recalculate average after deletion
+				const spot = await Spot.findByPk(spotId);
+				const remainingReviews = await Review.findAll({
+					where: { spotId: spotId },
+				});
+
+				let totalStars = 0;
+				remainingReviews.forEach((review) => {
+					totalStars += review.stars;
+				});
+				const avgRating =
+					remainingReviews.length > 0
+						? (totalStars / remainingReviews.length).toFixed(1)
+						: 0;
+
+				// Update spot with new average
+				await spot.update({
+					avgRating: avgRating,
+				});
+
+				res.json({ message: "Successfully deleted" });
+			} else {
+				res.status(403).json({ message: "Forbidden" });
+			}
+		} else {
+			res.status(404).json({ message: "Review couldn't be found" });
+		}
+	} else {
+		res.status(401).json({ message: "Authentication required" });
+	}
 });
 
 module.exports = router;

@@ -1,15 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { IoMdStar } from "react-icons/io";
 import OpenModalButton from "../OpenModalButton";
 import PostReviewModal from "../PostReviewModal";
 import DeleteReviewModal from "./DeleteReviewModal";
-import { useEffect } from "react";
-import { getSpotById } from "../../store/spots";
-
 
 const ReviewDetail = ({ spotId }) => {
-	const dispatch = useDispatch();
-
 	const reviews = useSelector((state) => state.reviews.SpotReviews);
 	const spot = useSelector((state) => state.spots.currentSpot);
 	const sessionUser = useSelector((state) => state.session.user);
@@ -18,78 +13,75 @@ const ReviewDetail = ({ spotId }) => {
 		? reviews.find((review) => review.userId === sessionUser.id)
 		: false;
 
-	useEffect(() => {
-		dispatch(getSpotById(spotId));
-	}, [reviews]);
-
 	if (!reviews) return null;
 
 	return (
 		<>
-			<div className="review-analytics">
-				<div style={{ marginTop: "20px", marginBottom: "10px" }}>
+			<div className="border-t mt-8 pt-8">
+				<div className="flex items-center gap-2 text-xl mb-6">
 					<IoMdStar />
 					{reviews.length === 0 && <span>New</span>}
 					{reviews.length === 1 && (
 						<span>
-							{spot.avgStarRating} &#183; {reviews.length} Review
+							{spot.avgStarRating} · {reviews.length} Review
 						</span>
 					)}
 					{reviews.length > 1 && (
 						<span>
-							{spot.avgStarRating} &#183; {reviews.length} Reviews
+							{spot.avgStarRating} · {reviews.length} Reviews
 						</span>
 					)}
 				</div>
-			</div>
-			<div>
 				{sessionUser && spot.ownerId !== sessionUser.id && !reviewed && (
-					<>
-						<OpenModalButton
-							buttonText="Post Your Review"
-							modalComponent={<PostReviewModal spotId={spotId}/>}
-						/>
-					</>
+					<OpenModalButton
+						buttonText="Post Your Review"
+						modalComponent={<PostReviewModal spotId={spotId} />}
+						className="bg-[#FF385C] text-white px-6 py-2 rounded-lg font-semibold hover:bg-[#E31C5F] transition-colors inline-block"
+					/>
 				)}
-			</div>
-			<div style={{ marginTop: "10px" }}>
+
 				{sessionUser && reviews.length === 0 && (
-					<>
-						<span>Be the first to post a review!</span>
-					</>
+					<p className="text-gray-600 mt-4">Be the first to post a review!</p>
 				)}
-			</div>
-			<div className="review-section">
-			{reviews.toReversed().map((review) => {
-				const formatter = new Intl.DateTimeFormat("en-US", {
-					year: "numeric",
-					month: "long",
-				});
-				const date = new Date(review.createdAt);
-				return (
-					
-						<div key={review.id} className="review-box">
-							{reviews.length >= 1 && (
-								<>
-									<h3>{review.User?.firstName}</h3>
-									<span>{formatter.format(date)}</span>
-									<p>{review.review}</p>
-									{sessionUser && sessionUser.id === review.userId && (
-										<OpenModalButton
-											modalComponent={
-												<DeleteReviewModal
-													reviewId={review.id}
-													spotId={spot.id}
+
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+					{reviews.toReversed().map((review) => {
+						const formatter = new Intl.DateTimeFormat("en-US", {
+							year: "numeric",
+							month: "long",
+						});
+						const date = new Date(review.createdAt);
+						return (
+							<div key={review.id} className="review-box">
+								{reviews.length >= 1 && (
+									<>
+										<h3 className="font-semibold mb-1">
+											{review.User?.firstName}
+										</h3>
+										<span className="text-gray-500 text-sm">
+											{formatter.format(date)}
+										</span>
+										<p className="mt-2 text-gray-700">{review.review}</p>
+										{sessionUser && sessionUser.id === review.userId && (
+											<div className="mt-4">
+												<OpenModalButton
+													modalComponent={
+														<DeleteReviewModal
+															reviewId={review.id}
+															spotId={spot.id}
+														/>
+													}
+													buttonText="Delete"
+													className="text-sm text-gray-600 underline"
 												/>
-											}
-											buttonText="Delete"
-										/>
-									)}
-								</>
-							)}
-						</div>
-				);
-			})}
+											</div>
+										)}
+									</>
+								)}
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		</>
 	);
