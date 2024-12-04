@@ -1,16 +1,15 @@
-"use strict";
 const { SpotImage } = require("../models");
-let options = {};
+const options = {};
 if (process.env.NODE_ENV === "production") {
 	options.schema = process.env.SCHEMA; // define your schema in options object
 }
 const mainImages = [
-	"https://cdn.discordapp.com/attachments/350710235272445972/1298094538786734121/DALLE_2024-10-21_20.22.06_-_A_detailed_image_of_the_front_of_a_house_with_a_modern_design._The_house_features_large_glass_windows_a_flat_roof_and_sleek_wooden_panels._The_yard_.webp?ex=6718503f&is=6716febf&hm=cc27cdcc378c4f0200c719860c7337d3d3e9f6d44f7c21ced4ab4bb15e27d652&",
-	"https://cdn.discordapp.com/attachments/350710235272445972/1298094539357294723/DALLE_2024-10-21_20.23.22_-_A_detailed_image_of_the_front_of_a_traditional_suburban_house._The_house_features_a_gabled_roof_a_red_brick_exterior_and_white-framed_windows_with_s.webp?ex=6718503f&is=6716febf&hm=2b2138c8c52907aeb24b173973e7b5464d02cdf5aa31dd5197e594869ede0672&",
-	"https://cdn.discordapp.com/attachments/350710235272445972/1298094539957075968/DALLE_2024-10-21_20.23.19_-_A_detailed_image_of_the_front_of_a_traditional_suburban_house._The_house_features_a_gabled_roof_a_red_brick_exterior_and_white-framed_windows_with_s.webp?ex=6718503f&is=6716febf&hm=50b2e975420dba98505f855b91e16eb2238194c64c00e0de83ff045b13af4550&",
-	"https://cdn.discordapp.com/attachments/350710235272445972/1298094540573507655/DALLE_2024-10-21_20.22.50_-_A_detailed_image_of_the_front_of_a_contemporary_house._The_house_features_a_sloped_roof_large_windows_and_a_combination_of_stone_and_wood_materials_.webp?ex=6718503f&is=6716febf&hm=2af9f563e7dbe173dfceefe4591dc41dba4e9202ad84fb2531632a2a50a34bb0&",
-	"https://cdn.discordapp.com/attachments/350710235272445972/1298094541169233981/DALLE_2024-10-21_20.22.46_-_A_detailed_image_of_the_front_of_a_contemporary_house._The_house_features_a_sloped_roof_large_windows_and_a_combination_of_stone_and_wood_materials_.webp?ex=67185040&is=6716fec0&hm=c15ed61d0bdd3e004b52daf1bfc2a2515f641d36f6f782a76806345116fb4b8c&",
-	"https://cdn.discordapp.com/attachments/350710235272445972/1298094541693517854/DALLE_2024-10-21_20.22.09_-_A_detailed_image_of_the_front_of_a_house_with_a_modern_design._The_house_features_large_glass_windows_a_flat_roof_and_sleek_wooden_panels._The_yard_.webp?ex=67185040&is=6716fec0&hm=77d7439b80fe274a53def0278f24272cb8fa83ce1654b046d321284264f4df7d&",
+	"https://res.cloudinary.com/perryhomes/image/upload/v1706913514/PerryHomes/Blog/Breathtaking%20Front%20of%20House%20D%C3%A9cor%20Ideas/ph.com_blog_2022_may_frontyard_design_ideas.jpg",
+	"https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2021/10/1/0/UFYY105_Home-exterior-walkway-mailbox.jpg.rend.hgtvcom.1280.960.suffix/1633368874539.jpeg",
+	"https://res.cloudinary.com/brickandbatten/images/f_auto,q_auto/v1641002858/wordpress_assets/beautiful-front-porch-scaled/beautiful-front-porch-scaled.jpg?_i=AA",
+	"https://res.cloudinary.com/brickandbatten/image/upload/c_scale,w_464,h_305,dpr_2/f_auto,q_auto/v1673889659/wordpress_assets/Order166557-aegeanolive-grantbeige-porch-walkway-door-FRONT-A.jpg?_i=AA",
+	"https://www.thespruce.com/thmb/GXHb2jCMMQ6xooGn6m57av2fVkk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/LindyeGallowayStudioShop2-dbb1af7650704b5e809bdce6905786d6-b617a43624b74b009139acba614ba4d5.jpeg",
+	"https://www.bhg.com/thmb/6Xm03Ho-L_TMFP4mtni_p9qUGrg=/1533x0/filters:no_upscale():strip_icc()/blue-house-white-trim-b39ac766-26348030891c4035b677d043f9411754.jpg",
 ];
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

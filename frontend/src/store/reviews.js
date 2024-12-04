@@ -34,8 +34,8 @@ export const createReview = (spotId, review) => async (dispatch) => {
 
 	if (response.ok) {
 		const data = await response.json();
-
-		dispatch(addReview(data));
+		await dispatch(addReview(data));
+		await dispatch(getReviewBySpotId(spotId));
 	}
 };
 
@@ -49,31 +49,36 @@ export const getReviewBySpotId = (spotId) => async (dispatch) => {
 	}
 };
 
-export const deleteReviewById = (reviewId) => async (dispatch) => {
+export const deleteReviewById = (reviewId, spotId) => async (dispatch) => {
 	const response = await csrfFetch(`/api/reviews/${reviewId}`, {
 		method: "DELETE",
 	});
 
 	if (response.ok) {
-		const data = await response.json();
-		dispatch(removeReview(data));
+		await dispatch(removeReview({ id: reviewId }));
+		await dispatch(getReviewBySpotId(spotId));
 	}
 };
 const initialState = { SpotReviews: [] };
 
+// biome-ignore lint/style/useDefaultParameterLast: <explanation>
 const reviewsReducer = (state = initialState, action) => {
+	let newState;
 	switch (action.type) {
 		case LOAD_REVIEWS:
-			return { ...state, SpotReviews: action.payload };
+			newState = { ...state };
+			newState.SpotReviews = action.payload;
+			return newState;
 		case ADD_REVIEW:
-			return { ...state, SpotReviews: [...state.spotReviews, action.payload] };
+			newState = { ...state };
+			newState.SpotReviews = [...state.SpotReviews, action.payload];
+			return newState;
 		case REMOVE_REVIEW:
-			return {
-				...state,
-				SpotReviews: state.SpotReviews.filter(
-					(review) => review.id !== action.payload
-				),
-			};
+			newState = { ...state };
+			newState.SpotReviews = state.SpotReviews.filter(
+				(review) => review.id !== action.payload.id,
+			);
+			return newState;
 		default:
 			return state;
 	}

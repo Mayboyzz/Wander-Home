@@ -45,65 +45,80 @@ function ProfileButton({ user }) {
 		navigate("/");
 	};
 
-	const ulClassName = "profile-dropdown" + (showMenu ? "" : "-hidden");
-	const buttonClassName = "profile-button" + (showMenu ? "-active" : "");
-
 	return (
-		<>
+		<div className="relative">
 			<button
-				data-testid="user-menu-button"
-				className={buttonClassName}
+				type="button"
+				className={`flex items-center gap-2 p-3 rounded-full border border-neutral-200 hover:shadow-airbnb transition-all bg-white
+					${showMenu ? "shadow-airbnb" : ""}`}
 				onClick={toggleMenu}
 			>
-				<RxHamburgerMenu />
-				<span> </span>
-				<FaUserCircle />
+				<RxHamburgerMenu className="text-neutral-600 text-lg" />
+				<FaUserCircle className="text-neutral-500 text-lg" />
 			</button>
 
-			<ul data-testid="user-dropdown-menu" className={ulClassName} ref={ulRef}>
+			<ul
+				data-testid="user-dropdown-menu"
+				className={`absolute right-0 top-[calc(100%+8px)] w-[240px] bg-white rounded-airbnb-lg shadow-airbnb
+					${showMenu ? "block" : "hidden"}`}
+				ref={ulRef}
+			>
 				{user ? (
-					<>
-						<li>Hello, {user.firstName}</li>
-						<li style={{ marginBottom: "10px" }}>{user.email}</li>
-						<li
-							style={{
-								borderTop: "1px solid black",
-								borderBottom: "1px solid black",
-								padding: "8px 0",
-								cursor: "pointer",
-							}}
-						>
-							{" "}
-							<NavLink
-								className="manage-spots"
-								to={"/spots/current"}
-								style={{ fontWeight: "100" }}
-								onClick={closeMenu}
-							>
-								Manage Spots
-							</NavLink>
+					<div className="py-2">
+						<li className="px-4 py-2 text-neutral-600">
+							Hello, {user.firstName}
 						</li>
-						<li style={{ cursor: "pointer" }} onClick={logout}>
-							<button>log out</button>
-						</li>
-					</>
+						<li className="px-4 pb-2 text-neutral-500 text-sm">{user.email}</li>
+						<div className="border-t border-neutral-200 my-2">
+							<li>
+								<NavLink
+									className="block px-4 py-3 hover:bg-neutral-50 transition-colors text-neutral-600"
+									to="/spots/current"
+									onClick={closeMenu}
+								>
+									Manage Spots
+								</NavLink>
+							</li>
+						</div>
+						<div className="border-t border-neutral-200">
+							<li>
+								<button
+									type="button"
+									onClick={logout}
+									className="w-full px-4 py-3 text-left hover:bg-neutral-50 transition-colors text-neutral-600"
+									style={{ width: "100%", textAlign: "inherit" }}
+								>
+									Log Out
+								</button>
+							</li>
+						</div>
+					</div>
 				) : (
-					<div className="menu">
-						<OpenModalMenuItem
-							modalComponent={<SignupFormModal />}
-							itemText="Sign Up"
-							onItemClick={closeMenu}
-						/>
-
-						<OpenModalMenuItem
-							itemText="Log In"
-							onItemClick={closeMenu}
-							modalComponent={<LoginFormModal />}
-						/>
+					<div className="py-2">
+						<div className="text-neutral-600">
+							<div className="hover:bg-neutral-50 transition-colors">
+								<div className="px-4 py-3">
+									<OpenModalMenuItem
+										modalComponent={<SignupFormModal />}
+										itemText="Sign Up"
+										onItemClick={closeMenu}
+									/>
+								</div>
+							</div>
+							<div className="hover:bg-neutral-50 transition-colors">
+								<div className="px-4 py-3">
+									<OpenModalMenuItem
+										itemText="Log In"
+										onItemClick={closeMenu}
+										modalComponent={<LoginFormModal />}
+									/>
+								</div>
+							</div>
+						</div>
 					</div>
 				)}
 			</ul>
-		</>
+		</div>
 	);
 }
 

@@ -15,7 +15,17 @@ function OpenModalMenuItem({
 		if (typeof onItemClick === "function") onItemClick();
 	};
 
-	return <li onClick={onClick}>{itemText}</li>;
+	const handleKeyPress = (e) => {
+		if (e.key === "Enter") {
+			onClick();
+		}
+	};
+
+	return (
+		<li onClick={onClick} onKeyPress={handleKeyPress}>
+			{itemText}
+		</li>
+	);
 }
 
 export default OpenModalMenuItem;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
-import "./SignupFormPage.css";
+
 import { useModal } from "../../context/Modal";
 
 function SignupFormModal() {
@@ -39,7 +39,7 @@ function SignupFormModal() {
 					firstName,
 					lastName,
 					password,
-				})
+				}),
 			)
 				.then(closeModal)
 				.catch(async (res) => {
@@ -56,10 +56,14 @@ function SignupFormModal() {
 	};
 
 	return (
-		<>
-			<h1>Sign Up</h1>
+		<div className="flex flex-col items-center p-4">
+			<h1 className="text-3xl font-bold mb-6">Sign Up</h1>
 
-			<form data-testid="sign-up-form" onSubmit={handleSubmit}>
+			<form
+				data-testid="sign-up-form"
+				onSubmit={handleSubmit}
+				className="flex flex-col gap-3 w-full max-w-md"
+			>
 				<div className="input-wrapper">
 					<input
 						data-testid="first-name-input"
@@ -68,10 +72,13 @@ function SignupFormModal() {
 						placeholder="First Name"
 						onChange={(e) => setFirstName(e.target.value)}
 						required
+						className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
 					/>
 				</div>
+				{errors.firstName && (
+					<p className="text-red-500 text-sm">{errors.firstName}</p>
+				)}
 
-				{errors.firstName && <p>{errors.firstName}</p>}
 				<div className="input-wrapper">
 					<input
 						data-testid="last-name-input"
@@ -80,9 +87,13 @@ function SignupFormModal() {
 						placeholder="Last Name"
 						onChange={(e) => setLastName(e.target.value)}
 						required
+						className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
 					/>
 				</div>
-				{errors.lastName && <p>{errors.lastName}</p>}
+				{errors.lastName && (
+					<p className="text-red-500 text-sm">{errors.lastName}</p>
+				)}
+
 				<div className="input-wrapper">
 					<input
 						data-testid="email-input"
@@ -91,11 +102,15 @@ function SignupFormModal() {
 						placeholder="Email"
 						onChange={(e) => setEmail(e.target.value)}
 						required
+						className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
 					/>
 				</div>
 				{errors.email && (
-					<p data-testid="email-error-message">{errors.email}</p>
+					<p className="text-red-500 text-sm" data-testid="email-error-message">
+						{errors.email}
+					</p>
 				)}
+
 				<div className="input-wrapper">
 					<input
 						data-testid="username-input"
@@ -104,11 +119,18 @@ function SignupFormModal() {
 						placeholder="Username"
 						onChange={(e) => setUsername(e.target.value)}
 						required
+						className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
 					/>
 				</div>
 				{errors.username && (
-					<p data-testid="username-error-message">{errors.username}</p>
+					<p
+						className="text-red-500 text-sm"
+						data-testid="username-error-message"
+					>
+						{errors.username}
+					</p>
 				)}
+
 				<div className="input-wrapper">
 					<input
 						data-testid="password-input"
@@ -117,9 +139,13 @@ function SignupFormModal() {
 						placeholder="Password"
 						onChange={(e) => setPassword(e.target.value)}
 						required
+						className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
 					/>
 				</div>
-				{errors.password && <p>{errors.password}</p>}
+				{errors.password && (
+					<p className="text-red-500 text-sm">{errors.password}</p>
+				)}
+
 				<div className="input-wrapper">
 					<input
 						data-testid="confirm-password-input"
@@ -128,20 +154,30 @@ function SignupFormModal() {
 						placeholder="Confirm Password"
 						onChange={(e) => setConfirmPassword(e.target.value)}
 						required
+						className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
 					/>
 				</div>
-				{errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+				{errors.confirmPassword && (
+					<p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+				)}
+
 				<div className="input-wrapper">
 					<button
 						data-testid="form-sign-up-button"
 						type="submit"
 						disabled={button}
+						className={`w-full py-2 px-4 rounded-lg text-white font-semibold
+							${
+								button
+									? "bg-gray-400 cursor-not-allowed"
+									: "bg-blue-500 hover:bg-blue-600 transition-colors"
+							}`}
 					>
 						Sign up
 					</button>
 				</div>
 			</form>
-		</>
+		</div>
 	);
 }
 

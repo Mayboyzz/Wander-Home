@@ -1,45 +1,66 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
-import "./Navigation.css";
-import { FaPlus } from "react-icons/fa";
+
+import { useState, useEffect } from "react";
 
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
+	const [isOpen, setIsOpen] = useState(false);
+
+	useEffect(() => {
+		const closeMenu = (e) => {
+			if (!e.target.closest(".profile-dropdown")) {
+				setIsOpen(false);
+			}
+		};
+
+		if (isOpen) {
+			document.addEventListener("click", closeMenu);
+		}
+
+		return () => document.removeEventListener("click", closeMenu);
+	}, [isOpen]);
 
 	return (
-		<ul id="nav-bar">
-			<li id="nav-home-button">
-				<NavLink to="/">
-					<img data-testid="logo" src="/logo(2).png" alt="website logo" />
-				</NavLink>
-			</li>
-			{isLoaded && (
-				<>
-					<li className="right-nav-bar">
-						{sessionUser && (
-							<div style={{ display: "flex", alignItems: "center" }}>
-								<NavLink id="add-button" to="/spots/new">
-									<FaPlus />
-								</NavLink>
-								<NavLink
-									data-testid="create-new-spot-button"
-									id="new-spot-navlink"
-									to="/spots/new"
-									style={{
-										marginRight: "10px",
-										color: "blue",
+		<nav className="bg-white border-b border-neutral-200">
+			<div className="max-w-7xl mx-auto px-4">
+				<div className="flex justify-between h-20">
+					<div className="flex items-center">
+						<NavLink to="/">
+							<img
+								data-testid="logo"
+								src="/logo(2).png"
+								alt="website logo"
+								className="h-8"
+							/>
+						</NavLink>
+					</div>
+
+					{isLoaded && (
+						<div className="flex items-center gap-4">
+							<NavLink
+								to="/spots/new"
+								className="hidden md:block text-neutral-600 hover:text-neutral-800 font-medium text-sm"
+							>
+								List your home
+							</NavLink>
+							<div>
+								<button
+									type="button"
+									onClick={(e) => {
+										e.stopPropagation();
+										setIsOpen(!isOpen);
 									}}
 								>
-									Create a New Spot!
-								</NavLink>
+									<ProfileButton user={sessionUser} />
+								</button>
 							</div>
-						)}
-						<ProfileButton user={sessionUser} />
-					</li>
-				</>
-			)}
-		</ul>
+						</div>
+					)}
+				</div>
+			</div>
+		</nav>
 	);
 }
 

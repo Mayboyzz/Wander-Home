@@ -1,18 +1,50 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllSpots, loadOneSpot } from "../../store/spots";
-import "./LandingPage.css";
+import { getAllSpots, loadOneSpot, setUserLocation } from "../../store/spots";
 import { IoMdStar } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import "react-tooltip/dist/react-tooltip.css";
-import { Tooltip } from "react-tooltip";
 import { loadReviews } from "../../store/reviews";
 
 function LandingPage() {
 	const dispatch = useDispatch();
 	const spots = useSelector((state) => state.spots.allSpots);
-	useSelector((state) => state.reviews);
+	const userLocation = useSelector((state) => state.spots.userLocation);
 	const navigate = useNavigate();
+
+	// Calculate distance between two points using Haversine formula
+	const calculateDistance = (lat1, lon1, lat2, lon2) => {
+		const R = 3959; // Radius of the Earth in miles (instead of 6371 for kilometers)
+		const dLat = (lat2 - lat1) * (Math.PI / 180);
+		const dLon = (lon2 - lon1) * (Math.PI / 180);
+		const a =
+			Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			Math.cos(lat1 * (Math.PI / 180)) *
+				Math.cos(lat2 * (Math.PI / 180)) *
+				Math.sin(dLon / 2) *
+				Math.sin(dLon / 2);
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		const distance = R * c; // Distance in miles
+		return Math.round(distance);
+	};
+
+	// Get user's location only if we don't already have it
+	useEffect(() => {
+		if (!userLocation && "geolocation" in navigator) {
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					dispatch(
+						setUserLocation({
+							lat: position.coords.latitude,
+							lng: position.coords.longitude,
+						}),
+					);
+				},
+				(error) => {
+					console.error("Error getting location:", error);
+				},
+			);
+		}
+	}, [dispatch, userLocation]);
 
 	useEffect(() => {
 		dispatch(getAllSpots());
@@ -23,50 +55,63 @@ function LandingPage() {
 	if (!spots) return null;
 
 	return (
-		<div id="spots-list-wrapper">
-			<div
-				data-testid="spot-list"
-				style={{
-					display: "flex",
-					justifyContent: "center",
-					flexWrap: "wrap",
-					margin: "0 auto",
-				}}
-			>
+		<div className="max-w-7xl mx-auto px-4 py-8">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 				{spots.map((spot) => {
+					const distance =
+						userLocation && spot.lat && spot.lng
+							? calculateDistance(
+									userLocation.lat,
+									userLocation.lng,
+									Number.parseFloat(spot.lat),
+									Number.parseFloat(spot.lng),
+								)
+							: null;
+
 					return (
 						<div
 							key={`${spot.id}-landing-page-block`}
-							className="spot-block"
-							data-testid="spot-tile"
-							onClick={() => navigate("/spots/" + spot.id)}
+							onClick={() => navigate(`/spots/${spot.id}`)}
+							onKeyUp={(e) => {
+								if (e.key === "Enter") {
+									navigate(`/spots/${spot.id}`);
+								}
+							}}
+							className="cursor-pointer group"
 						>
-							<a
-								data-tooltip-id="my-tooltip"
-								data-testid="spot-tooltip"
-								data-tooltip-content={spot.name}
-								data-tooltip-place="top"
-							>
+							<div className="aspect-square mb-3 rounded-airbnb-lg overflow-hidden">
 								<img
-									data-testid="spot-thumbnail-image"
-									src={`${spot.previewImage}`}
+									src={spot.previewImage}
+									alt={`Preview of ${spot.name}`}
+									onError={(e) => {
+										e.target.src = "https://placehold.co/100x100?text=No+Image";
+									}}
+									className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
 								/>
-							</a>
-							<Tooltip id="my-tooltip" />
-
-							<div className="spot-info">
-								<span data-testid="spot-city">
-									{spot.city}, {spot.state}
-								</span>
-								<div className="ratings">
-									<IoMdStar />
-									<span data-testid="spot-rating">
-										{spot.avgRating === "0.0" ? "New" : spot.avgRating}
-									</span>
-								</div>
 							</div>
-							<div className="spot-price">
-								<span data-testid="spot-price">${spot.price} / night</span>
+
+							<div className="space-y-1">
+								<div className="flex justify-between items-start">
+									<h3 className="text-neutral-600 font-medium">
+										{spot.city}, {spot.state}
+									</h3>
+									<div className="flex items-center gap-1 text-neutral-600">
+										<IoMdStar className="text-sm" />
+										<span className="text-sm">
+											{spot.avgRating === "0.0" ? "New" : spot.avgRating}
+										</span>
+									</div>
+								</div>
+								<p className="text-neutral-500 text-sm">
+									{distance
+										? `${distance} miles away`
+										: "Distance not available"}
+								</p>
+								{/* <p className="text-neutral-500 text-sm">Jan 21-26</p> */}
+								<p className="text-neutral-600 mt-1">
+									<span className="font-semibold">${spot.price}</span>
+									<span className="text-neutral-600"> night</span>
+								</p>
 							</div>
 						</div>
 					);
