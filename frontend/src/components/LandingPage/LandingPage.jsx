@@ -11,9 +11,8 @@ function LandingPage() {
 	const userLocation = useSelector((state) => state.spots.userLocation);
 	const navigate = useNavigate();
 
-	// Calculate distance between two points using Haversine formula
 	const calculateDistance = (lat1, lon1, lat2, lon2) => {
-		const R = 3959; // Radius of the Earth in miles (instead of 6371 for kilometers)
+		const R = 3959;
 		const dLat = (lat2 - lat1) * (Math.PI / 180);
 		const dLon = (lon2 - lon1) * (Math.PI / 180);
 		const a =
@@ -23,11 +22,10 @@ function LandingPage() {
 				Math.sin(dLon / 2) *
 				Math.sin(dLon / 2);
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		const distance = R * c; // Distance in miles
+		const distance = R * c;
 		return Math.round(distance);
 	};
 
-	// Get user's location only if we don't already have it
 	useEffect(() => {
 		if (!userLocation && "geolocation" in navigator) {
 			navigator.geolocation.getCurrentPosition(
@@ -36,12 +34,12 @@ function LandingPage() {
 						setUserLocation({
 							lat: position.coords.latitude,
 							lng: position.coords.longitude,
-						}),
+						})
 					);
 				},
 				(error) => {
 					console.error("Error getting location:", error);
-				},
+				}
 			);
 		}
 	}, [dispatch, userLocation]);
@@ -64,8 +62,8 @@ function LandingPage() {
 									userLocation.lat,
 									userLocation.lng,
 									Number.parseFloat(spot.lat),
-									Number.parseFloat(spot.lng),
-								)
+									Number.parseFloat(spot.lng)
+							  )
 							: null;
 
 					return (

@@ -28,7 +28,7 @@ router.get("/current", async (req, res) => {
 			],
 		});
 		const Bookings = [];
-		const formatRes = bookings.map((value) => {
+		bookings.map((value) => {
 			Bookings.push({
 				id: value.id,
 				spotId: value.spotId,
@@ -46,8 +46,8 @@ router.get("/current", async (req, res) => {
 					previewImage: value.Spot.SpotImages[0].url,
 				},
 				userId: value.userId,
-				startDate: value.startDate.toJSON().slice(0, 10),
-				endDate: value.endDate.toJSON().slice(0, 10),
+				startDate: value.startDate,
+				endDate: value.endDate,
 				createdAt: `${value.createdAt.getFullYear()}-${
 					value.createdAt.getMonth() + 1
 				}-${value.createdAt.getDate()} ${value.createdAt.getHours()}:${value.createdAt.getMinutes()}:${value.createdAt.getSeconds()}`,

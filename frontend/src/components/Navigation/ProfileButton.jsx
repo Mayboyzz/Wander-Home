@@ -17,8 +17,7 @@ function ProfileButton({ user }) {
 	const navigate = useNavigate();
 
 	const toggleMenu = (e) => {
-		e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
-		// if (!showMenu) setShowMenu(true);
+		e.stopPropagation();
 		setShowMenu(!showMenu);
 	};
 
@@ -46,7 +45,7 @@ function ProfileButton({ user }) {
 	};
 
 	return (
-		<div className="relative">
+		<div className="relative z-50">
 			<button
 				type="button"
 				className={`flex items-center gap-2 p-3 rounded-full border border-neutral-200 hover:shadow-airbnb transition-all bg-white
@@ -69,7 +68,7 @@ function ProfileButton({ user }) {
 							Hello, {user.firstName}
 						</li>
 						<li className="px-4 pb-2 text-neutral-500 text-sm">{user.email}</li>
-						<div className="border-t border-neutral-200 my-2">
+						<div className="border-t border-neutral-200">
 							<li>
 								<NavLink
 									className="block px-4 py-3 hover:bg-neutral-50 transition-colors text-neutral-600"
@@ -82,11 +81,21 @@ function ProfileButton({ user }) {
 						</div>
 						<div className="border-t border-neutral-200">
 							<li>
+								<NavLink
+									className="block px-4 py-3 hover:bg-neutral-50 transition-colors text-neutral-600"
+									to="/bookings"
+									onClick={closeMenu}
+								>
+									Manage Bookings
+								</NavLink>
+							</li>
+						</div>
+						<div className="border-t border-neutral-200">
+							<li>
 								<button
 									type="button"
 									onClick={logout}
-									className="w-full px-4 py-3 text-left hover:bg-neutral-50 transition-colors text-neutral-600"
-									style={{ width: "100%", textAlign: "inherit" }}
+									className="w-full px-4 py-3 hover:bg-neutral-50 transition-colors text-neutral-600 text-center"
 								>
 									Log Out
 								</button>
@@ -105,7 +114,7 @@ function ProfileButton({ user }) {
 									/>
 								</div>
 							</div>
-							<div className="hover:bg-neutral-50 transition-colors">
+							<div className="hover:bg-neutral-50 transition-colors border-t border-neutral-200">
 								<div className="px-4 py-3">
 									<OpenModalMenuItem
 										itemText="Log In"
