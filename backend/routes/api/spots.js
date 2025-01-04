@@ -657,11 +657,10 @@ router.delete("/:reviewId", async (req, res) => {
 				const remainingReviews = await Review.findAll({
 					where: { spotId: spotId },
 				});
-
 				let totalStars = 0;
-				remainingReviews.forEach((review) => {
+				for (const review of remainingReviews) {
 					totalStars += review.stars;
-				});
+				}
 				const avgRating =
 					remainingReviews.length > 0
 						? (totalStars / remainingReviews.length).toFixed(1)

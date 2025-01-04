@@ -1,4 +1,6 @@
 import { IoMdStar } from "react-icons/io";
+import OpenModalButton from "../OpenModalButton";
+import { BookingModal } from "../Bookings/BookingModal";
 
 const SpotDetail = ({ spot }) => {
 	if (!spot || !spot.SpotImages) return <p>Loading...</p>;
@@ -63,13 +65,11 @@ const SpotDetail = ({ spot }) => {
 							)}
 						</div>
 					</div>
-					<button
-						type="button"
-						onClick={() => alert("Feature Coming Soon...")}
+					<OpenModalButton
+						buttonText="Reserve"
+						modalComponent={<BookingModal />}
 						className="w-full bg-[#FF385C] text-white py-3 rounded-lg font-semibold hover:bg-[#E31C5F] transition-colors"
-					>
-						Reserve
-					</button>
+					/>
 				</div>
 			</div>
 		</>

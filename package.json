@@ -1,18 +1,44 @@
 {
-	"name": "api-project",
-	"version": "1.0.0",
-	"description": "## Database Schema Design",
-	"main": "index.js",
+	"name": "neocord",
+	"private": true,
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"install": "npm --prefix backend install backend",
-		"dev:backend": "npm install --prefix backend start",
-		"sequelize": "npm run --prefix backend sequelize",
-		"sequelize-cli": "npm run --prefix backend sequelize-cli",
+		"changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 -n ./scripts/changelog.js",
+		"clean": "turbo run clean",
+		"_clean": "git clean -fX node_modules .turbo",
+		"dev": "turbo run dev",
+		"docker:dev": "docker compose -f docker/compose.dev.yaml up",
+		"docker:down": "docker compose -f docker/compose.dev.yaml down",
+		"docker:build": "docker compose -f docker/compose.prod.yaml build",
+		"docker:test": "docker compose -f docker/compose.prod.yaml up --abort-on-container-exit",
+		"fix": "turbo run fix",
+		"_fix": "biome check --write .",
+		"format": "turbo run format",
+		"lint": "turbo run lint",
+		"lint:ws": "bunx sherif@latest",
+		"postinstall": "turbo run install",
+		"prepare": "lefthook install && bun lint:ws",
+		"typecheck": "turbo run typecheck",
 		"start": "npm start --prefix backend",
 		"build": "npm run --prefix backend build"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC"
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"conventional-changelog-cli": "^5.0.0",
+		"conventional-changelog-config-spec": "^2.1.0",
+		"lefthook": "^1.8.2",
+		"turbo": "^2.3.0",
+		"typescript": "~5.6.3"
+	},
+	"engines": {
+		"bun": ">=1.0.0"
+	},
+	"packageManager": "bun@1.1.34",
+	"workspaces": [
+		"packages/*",
+		"backend",
+		"frontend"
+	],
+	"trustedDependencies": [
+		"backend"
+	]
 }

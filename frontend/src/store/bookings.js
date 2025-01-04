@@ -59,22 +59,29 @@ export const deleteReviewById = (bookingId) => async (dispatch) => {
 	}
 };
 
-const initialState = { UserBookings: [] };
+const initialState = { upcomingBookings: [], pastBookings: [] };
 
 const bookingsReducer = (state = initialState, action) => {
 	let newState;
+	const todayDate = new Date();
+
 	switch (action.type) {
 		case LOAD_BOOKING:
 			newState = { ...state };
-			newState.UserBookings = action.payload;
+			newState.upcomingBookings = action.payload.Bookings.filter(
+				(booking) => new Date(booking.startDate) > todayDate
+			);
+			newState.pastBookings = action.payload.Bookings.filter(
+				(booking) => new Date(booking.startDate) < todayDate
+			);
 			return newState;
 		case ADD_BOOKING:
 			newState = { ...state };
-			newState.UserBookings = [...state.UserBookings, action.payload];
+			newState.upcomingBookings = [...state.upcomingBookings, action.payload];
 			return newState;
 		case REMOVE_BOOKING:
 			newState = { ...state };
-			newState.UserBookings = state.UserBookings.filter(
+			newState.upcomingBookings = state.upcomingBookings.filter(
 				(booking) => booking.id !== action.payload.id
 			);
 			return newState;
