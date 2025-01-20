@@ -39,7 +39,7 @@ export const createBooking = (spotId, booking) => async (dispatch) => {
 };
 
 export const getCurrentUsersBookings = () => async (dispatch) => {
-	const response = await fetch(`/api/bookings/current`);
+	const response = await csrfFetch("/api/bookings/current");
 
 	if (response.ok) {
 		const data = await response.json();
@@ -69,10 +69,10 @@ const bookingsReducer = (state = initialState, action) => {
 		case LOAD_BOOKING:
 			newState = { ...state };
 			newState.upcomingBookings = action.payload.Bookings.filter(
-				(booking) => new Date(booking.startDate) > todayDate
+				(booking) => new Date(booking.startDate) > todayDate,
 			);
 			newState.pastBookings = action.payload.Bookings.filter(
-				(booking) => new Date(booking.startDate) < todayDate
+				(booking) => new Date(booking.startDate) < todayDate,
 			);
 			return newState;
 		case ADD_BOOKING:
@@ -82,7 +82,7 @@ const bookingsReducer = (state = initialState, action) => {
 		case REMOVE_BOOKING:
 			newState = { ...state };
 			newState.upcomingBookings = state.upcomingBookings.filter(
-				(booking) => booking.id !== action.payload.id
+				(booking) => booking.id !== action.payload.id,
 			);
 			return newState;
 		default:

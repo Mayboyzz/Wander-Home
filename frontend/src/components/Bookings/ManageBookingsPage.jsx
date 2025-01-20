@@ -10,15 +10,16 @@ const normalizeDates = (startDate, endDate) => {
 
 	// Get the formatted parts for start and end dates
 	const startFormatted = new Intl.DateTimeFormat("en-US", options).format(
-		start
+		start,
 	);
 	const endDay = new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(
-		end
+		end,
+	);
+	const endYear = new Intl.DateTimeFormat("en-US", { year: "numeric" }).format(
+		end,
 	);
 
-	return `${startFormatted.split(" ")[0]} ${
-		startFormatted.split(" ")[1]
-	}-${endDay}`;
+	return `${startFormatted.split(" ")[0]} ${startFormatted.split(" ")[1]}-${endDay}, ${endYear}`;
 };
 
 const DateRange = ({ startDate, endDate }) => {
@@ -31,7 +32,7 @@ export const ManageBookings = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const upcomingBookings = useSelector(
-		(state) => state.bookings.upcomingBookings
+		(state) => state.bookings.upcomingBookings,
 	);
 	const pastBookings = useSelector((state) => state.bookings.pastBookings);
 
@@ -49,7 +50,6 @@ export const ManageBookings = () => {
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 					{upcomingBookings?.map((booking) => {
 						const start = new Date(booking.startDate);
-						console.log(start < todayDate);
 						return (
 							<div
 								key={`${booking.id}-landing-page-block`}
@@ -63,8 +63,8 @@ export const ManageBookings = () => {
 							>
 								<div className="aspect-square mb-3 rounded-airbnb-lg overflow-hidden">
 									<img
-										src={booking.Spot.previewImage}
-										alt={`Preview of ${booking.Spot.name}`}
+										src={booking.Spot?.previewImage}
+										alt={`Preview of ${booking.Spot?.name}`}
 										onError={(e) => {
 											e.target.src =
 												"https://placehold.co/100x100?text=No+Image";
@@ -76,7 +76,7 @@ export const ManageBookings = () => {
 								<div className="space-y-1">
 									<div className="flex justify-between items-start">
 										<h3 className="text-neutral-600 font-medium">
-											{booking.Spot.city}, {booking.Spot.state}
+											{booking.Spot?.city}, {booking.Spot?.state}
 										</h3>
 									</div>
 									<DateRange
@@ -105,8 +105,8 @@ export const ManageBookings = () => {
 								>
 									<div className="aspect-square mb-3 rounded-airbnb-lg overflow-hidden">
 										<img
-											src={booking.Spot.previewImage}
-											alt={`Preview of ${booking.Spot.name}`}
+											src={booking.Spot?.previewImage}
+											alt={`Preview of ${booking.Spot?.name}`}
 											onError={(e) => {
 												e.target.src =
 													"https://placehold.co/100x100?text=No+Image";
@@ -118,7 +118,7 @@ export const ManageBookings = () => {
 									<div className="space-y-1">
 										<div className="flex justify-between items-start">
 											<h3 className="text-neutral-600 font-medium">
-												{booking.Spot.city}, {booking.Spot.state}
+												{booking.Spot?.city}, {booking.Spot?.state}
 											</h3>
 										</div>
 										<DateRange
