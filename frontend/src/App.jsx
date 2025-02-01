@@ -6,9 +6,9 @@ import Navigation from "./components/Navigation/Navigation";
 import LandingPage from "./components/LandingPage";
 import SpotPage from "./components/SpotPage";
 import NewSpotForm from "./components/NewSpotForm";
-import ManageSpotsPage from "./components/ManageSpotsPage";
-import EditSpot from "./components/ManageSpotsPage/EditSpot";
-import { ManageBookings } from "./components/Bookings/ManageBookingsPage";
+import CurrentSpotsPage from "./components/CurrentSpotsPage";
+import EditSpot from "./components/CurrentSpotsPage/EditSpot";
+import ManageUserPage from "./components/ManageUser";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -37,6 +37,7 @@ const router = createBrowserRouter([
 				path: "/",
 				element: <LandingPage />,
 			},
+			{ path: "/profile", element: <ManageUserPage /> },
 			{
 				path: "/spots/:spotId",
 				element: <Outlet />,
