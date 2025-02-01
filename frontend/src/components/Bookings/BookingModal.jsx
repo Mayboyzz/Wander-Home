@@ -14,6 +14,8 @@ export const BookingModal = () => {
 		new Date().toISOString().split("T")[0],
 	);
 
+	const [errors, setErrors] = useState({});
+
 	const handleStartDateChange = (e) => {
 		setStartDate(e.target.value);
 	};
